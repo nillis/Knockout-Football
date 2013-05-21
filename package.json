@@ -1,0 +1,33 @@
+{
+  "name": "Knockout",
+  "version": "0.1.0",
+  "author": "Niels Timmermans <nillisti@gmail.com>",
+  "description": "A Knockout application to manage football tournaments",
+  "main": "./server.js",
+  "repository": {
+    "type":"git",
+    "url":"https://github.com/nillis/3ICT2_Niels.Timmermans_project02.git"
+  },
+  "keywords": [
+    "knockout",
+    "bootstrap",
+    "express"
+  ],
+  "dependencies": {
+    "jade": "*",
+    "stylus": "*",
+    "grunt": "*",
+    "grunt-contrib-stylus": "*",
+    "grunt-contrib-jade": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-requirejs": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-clean": "*"
+  },
+  "noAnalyze": true,
+  "license": "Apache",
+  "engines": {
+    "node": ">=0.6.14"
+  }
+}

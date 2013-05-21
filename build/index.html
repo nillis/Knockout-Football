@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout | Football tournament</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="page-header">
+      <header>
+        <div class="container">
+          <div class="row"><a href="#">
+              <div class="span6">
+                <div class="logo">
+                  <h1>Knockout</h1>
+                  <div class="hmeta">Football tournament</div>
+                </div>
+              </div></a></div>
+        </div>
+      </header>
+    </div>
+    <div class="container">
+      <div class="form-horizontal">
+        <ul data-bind="foreach: categories" class="nav nav-tabs">
+          <li><a data-toggle="tab" data-bind="html: name, attr: { href: '#'+ name().replace(' ','') }"></a></li>
+        </ul>
+        <button data-bind="click: addCategory">Add category</button>
+        <div class="tabbable">
+          <div data-bind="foreach: categories" class="tab-content">
+            <div data-bind="attr: { id: name().replace(' ','') }" class="tab-pane">
+              <div data-bind="template: { name: 'categoryConfigurationTemplate', data: $data }"></div>
+              <div data-bind="template: { name: 'fixtureTemplate', data: matches }"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <script src="js/app.js"></script><script type="text/html" id="categoryConfigurationTemplate"> 
+    <div class="control-group">
+      <label class="control-label">Naam</label>
+      <div class="controls">
+        <input data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Home and away</label>
+      <div class="controls">
+        <input type="checkbox" data-bind="checked: homeAndAway">
+      </div>
+    </div>
+    <div data-bind="foreach: teams">
+      <div class="control-group">
+        <label class="control-label">Team</label>
+        <div class="controls">
+          <input data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge"><a href="#" data-bind="click: $parent.removeTeam">Delete</a>
+        </div>
+      </div>
+    </div>
+    <button data-bind="click: addTeam">Add team</button>
+    <button data-bind="click: generateFixture">Generate fixture</button></script><script type="text/html" id="fixtureTemplate"> 
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Uur</th>
+          <th>Thuis</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>Uit</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: $data">
+        <tr>
+          <td>
+            <input type="date" class="input-medium">
+          </td>
+          <td>
+            <input type="time" class="input-small">
+          </td>
+          <td data-bind="text: homeTeam().name()" class="fixtureTextItem"></td>
+          <td>
+            <input type="number" data-bind="value: homeScore()" class="input-verysmall">
+          </td>
+          <td class="fixtureTextItem">-</td>
+          <td>
+            <input type="number" data-bind="value: awayScore()" class="input-verysmall">
+          </td>
+          <td data-bind="text: awayTeam().name()" class="fixtureTextItem"></td>
+        </tr>
+      </tbody>
+    </table></script>
+  </body>
+</html>

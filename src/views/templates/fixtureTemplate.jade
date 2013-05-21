@@ -1,0 +1,27 @@
+| <script type="text/html" id="fixtureTemplate"> 
+
+table.table.table-striped.table-hover
+    thead
+        tr
+            th Datum
+            th Uur
+            th Thuis
+            th
+            th
+            th
+            th Uit
+    tbody(data-bind='foreach: $data')
+        tr
+            td
+                input.input-medium(type='date')
+            td
+                input.input-small(type='time')
+            td.fixtureTextItem(data-bind='text: homeTeam().name()')
+            td
+                input.input-verysmall(type='number', data-bind='value: homeScore()')
+            td.fixtureTextItem -
+            td
+                input.input-verysmall(type='number', data-bind='value: awayScore()')
+            td.fixtureTextItem(data-bind='text: awayTeam().name()')
+
+| </script>

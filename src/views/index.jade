@@ -1,0 +1,22 @@
+extends layout/layout
+
+block content   
+    .container
+        .form-horizontal
+            ul.nav.nav-tabs(data-bind='foreach: categories')
+                li
+                    a(data-toggle='tab', data-bind='html: name, attr: { href: \'#\'+ name().replace(\' \',\'\') }')
+        
+            button(data-bind='click: addCategory') Add category
+        
+            .tabbable
+                .tab-content(data-bind='foreach: categories')
+                    .tab-pane(data-bind='attr: { id: name().replace(\' \',\'\') }')
+                        div(data-bind='template: { name: \'categoryConfigurationTemplate\', data: $data }')
+                        div(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
+        
+    hr
+
+block scripts
+    include templates/categoryConfigurationTemplate   
+    include templates/fixtureTemplate   
