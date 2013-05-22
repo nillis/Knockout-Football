@@ -6,38 +6,60 @@ define(['knockout', 'matchViewModel'], function (ko, matchViewModel) {
         self.name = ko.observable(name);
         self.matches = ko.observableArray();
 
-        self.played = ko.computed(function () {
+        self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
                 return match.homeScore() && match.awayScore();
             });
         }, self);
 
+        self.played = ko.computed(function () {
+            return self.playedMatches().length;
+        }, self);
+
         self.won = ko.computed(function () {
-            return 0;
+            return ko.utils.arrayFilter(self.playedMatches(), function (match) {
+                return match.homeTeam().name() === self.name() && match.homeScore() > match.awayScore() || match.awayTeam().name() === self.name() && match.awayScore() > match.homeScore();
+            }).length;
         }, self);
 
         self.lost = ko.computed(function () {
-            return 0;
+            return ko.utils.arrayFilter(self.playedMatches(), function (match) {
+                return match.homeTeam().name() === self.name() && match.homeScore() < match.awayScore() || match.awayTeam().name() === self.name() && match.awayScore() < match.homeScore();
+            }).length;
         }, self);
 
         self.draws = ko.computed(function () {
-            return 0;
+            return ko.utils.arrayFilter(self.playedMatches(), function (match) {
+                return match.homeScore() === match.awayScore();
+            }).length;
         }, self);
 
         self.goalsFor = ko.computed(function () {
-            return 0;
+            var goalsFor = 0;
+
+            ko.utils.arrayForEach(self.playedMatches(), function (match) {
+                goalsFor += parseInt(match.homeTeam().name() === self.name() ? match.homeScore() : match.awayScore(), 10);
+            });
+
+            return goalsFor;
         }, self);
 
         self.goalsAgainst = ko.computed(function () {
-            return 0;
+            var goalsAgainst = 0;
+
+            ko.utils.arrayForEach(self.playedMatches(), function (match) {
+                goalsAgainst += parseInt(match.homeTeam().name() === self.name() ? match.awayScore() : match.homeScore(), 10);
+            });
+
+            return goalsAgainst;
         }, self);
 
         self.goalsDifference = ko.computed(function () {
-            return 0;
+            return self.goalsFor() - self.goalsAgainst();
         }, self);
 
         self.points = ko.computed(function () {
-            return 0;
+            return 3 * self.won() + 1 * self.draws();
         }, self);
     };
 });
