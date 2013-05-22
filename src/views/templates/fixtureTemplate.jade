@@ -13,9 +13,9 @@ table.table.table-striped.table-hover
     tbody(data-bind='foreach: $data')
         tr
             td
-                input.input-medium(type='date')
+                input.input-medium(type='date', data-bind='value: date')
             td
-                input.input-small(type='time')
+                input.input-small(type='time', data-bind='value: time')
             td.fixtureTextItem(data-bind='text: homeTeam().name()')
             td
                 input.input-verysmall(type='number', data-bind='value: homeScore()')

@@ -1,23 +1,34 @@
 | <script type="text/html" id="categoryConfigurationTemplate"> 
-
-.control-group
-    label.control-label Naam
-    .controls
-        input.input-xlarge(data-bind='value: name, valueUpdate: \'afterkeydown\'')
-
-.control-group
-    label.control-label Home and away
-    .controls
-        input(type='checkbox', data-bind='checked: homeAndAway')
-
-div(data-bind='foreach: teams')
+.form-horizontal.well
     .control-group
-        label.control-label Team
+        label.control-label Naam
         .controls
-            input.input-xlarge(data-bind='value: name, valueUpdate: \'afterkeydown\'')
-            a(href='#', data-bind='click: $parent.removeTeam') Delete
+            input.input-xlarge(type='text', data-bind='value: name, valueUpdate: \'afterkeydown\'')
 
-button(data-bind='click: addTeam') Add team
-button(data-bind='click: generateFixture') Generate fixture
+    .control-group
+        label.control-label Date
+        .controls
+            input.input-xlarge(type='date', data-bind='value: date')
+
+    .control-group
+        label.control-label Home and away
+        .controls
+            input(type='checkbox', data-bind='checked: homeAndAway')
+
+    .control-group
+        label.control-label Teams
+        .controls.teams(data-bind='foreach: teams')
+            .team
+                input.input-xlarge(type='text', data-bind='value: name, valueUpdate: \'afterkeydown\'')
+                // ko if: $index() === 0
+                a(href='#', data-bind='click: category.addTeam') 
+                    i.icon-plus
+                // /ko
+                // ko if: $index() > 0
+                a(href='#', data-bind='if: $index != 0, click: category.removeTeam') 
+                    i.icon-trash
+                // /ko
+    .form-actions
+        button.btn(data-bind='click: generateFixture') Generate fixture
 
 | </script>

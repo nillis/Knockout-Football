@@ -31,5 +31,5 @@ require(['jquery', 'knockout', 'appViewModel', 'domReady!'], function ($, ko, ap
     ko.applyBindings(new appViewModel());
 
     $('.nav-tabs li:first-child').addClass('active');
-    $('.tab-pane:first-child').addClass('active');
+    $('.tab-pane:first-child').addClass('active');   
 });

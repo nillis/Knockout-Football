@@ -47,7 +47,8 @@ module.exports = function (grunt) {
                     baseUrl: 'src',
                     name: 'app',
                     out: 'build/debug/js/app.js',
-                    mainConfigFile: 'src/app.js'
+                    mainConfigFile: 'src/app.js',
+                    optimize: 'none'
                 }
             }
         },

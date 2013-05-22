@@ -8,5 +8,9 @@ define(['knockout', 'categoryViewModel'], function (ko, categoryViewModel) {
         self.addCategory = function () {
             self.categories.push(new categoryViewModel('Category ' + (self.categories().length + 1)));
         };
+
+        $('#addCategory').on('click', function () {
+            self.addCategory();
+        });
     };
 });

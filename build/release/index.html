@@ -20,45 +20,58 @@
         </div>
       </header>
     </div>
-    <div class="container">
-      <div class="form-horizontal">
-        <ul data-bind="foreach: categories" class="nav nav-tabs">
-          <li><a data-toggle="tab" data-bind="html: name, attr: { href: '#'+ name().replace(' ','') }"></a></li>
-        </ul>
-        <button data-bind="click: addCategory">Add category</button>
-        <div class="tabbable">
-          <div data-bind="foreach: categories" class="tab-content">
-            <div data-bind="attr: { id: name().replace(' ','') }" class="tab-pane">
-              <div data-bind="template: { name: 'categoryConfigurationTemplate', data: $data }"></div>
-              <div data-bind="template: { name: 'fixtureTemplate', data: matches }"></div>
-            </div>
+    <div class="container">       
+      <ul class="nav nav-tabs">
+        <!-- ko foreach: categories -->
+        <li><a data-toggle="tab" data-bind="html: name, attr: { href: '#'+ name().replace(' ','') }"></a></li>
+        <!-- /ko -->
+        <li><a href="#" data-bind="click: addCategory"> <i class="icon-plus"></i></a></li>
+      </ul>
+      <div class="tabbable">
+        <div data-bind="foreach: { data: categories, as: 'category' }" class="tab-content">
+          <div data-bind="attr: { id: name().replace(' ','') }" class="tab-pane">
+            <div data-bind="template: { name: 'categoryConfigurationTemplate', data: category }"></div>
+            <div data-bind="template: { name: 'fixtureTemplate', data: matches }"></div>
           </div>
         </div>
       </div>
     </div>
     <hr><script type="text/html" id="categoryConfigurationTemplate"> 
-    <div class="control-group">
-      <label class="control-label">Naam</label>
-      <div class="controls">
-        <input data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge">
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label">Home and away</label>
-      <div class="controls">
-        <input type="checkbox" data-bind="checked: homeAndAway">
-      </div>
-    </div>
-    <div data-bind="foreach: teams">
+    <div class="form-horizontal well">
       <div class="control-group">
-        <label class="control-label">Team</label>
+        <label class="control-label">Naam</label>
         <div class="controls">
-          <input data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge"><a href="#" data-bind="click: $parent.removeTeam">Delete</a>
+          <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge">
         </div>
       </div>
-    </div>
-    <button data-bind="click: addTeam">Add team</button>
-    <button data-bind="click: generateFixture">Generate fixture</button></script><script type="text/html" id="fixtureTemplate"> 
+      <div class="control-group">
+        <label class="control-label">Date</label>
+        <div class="controls">
+          <input type="date" data-bind="value: date" class="input-xlarge">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Home and away</label>
+        <div class="controls">
+          <input type="checkbox" data-bind="checked: homeAndAway">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Teams</label>
+        <div data-bind="foreach: teams" class="controls teams">
+          <div class="team">
+            <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge">
+            <!-- ko if: $index() === 0--><a href="#" data-bind="click: category.addTeam"> <i class="icon-plus"></i></a>
+            <!-- /ko-->
+            <!-- ko if: $index() > 0--><a href="#" data-bind="if: $index != 0, click: category.removeTeam"> <i class="icon-trash"></i></a>
+            <!-- /ko-->
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button data-bind="click: generateFixture" class="btn">Generate fixture</button>
+      </div>
+    </div></script><script type="text/html" id="fixtureTemplate"> 
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -74,10 +87,10 @@
       <tbody data-bind="foreach: $data">
         <tr>
           <td>
-            <input type="date" class="input-medium">
+            <input type="date" data-bind="value: date" class="input-medium">
           </td>
           <td>
-            <input type="time" class="input-small">
+            <input type="time" data-bind="value: time" class="input-small">
           </td>
           <td data-bind="text: homeTeam().name()" class="fixtureTextItem"></td>
           <td>

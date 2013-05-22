@@ -4,6 +4,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         var self = this;
 
         self.name = ko.observable(name);
+        self.date = ko.observable(new Date().toJSON().slice(0,10));
         self.homeAndAway = ko.observable(false);
         self.teams = ko.observableArray([new teamViewModel()]);
         self.matches = ko.observableArray();
@@ -22,7 +23,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             var teamCombinations = getCombinations(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                var match = new matchViewModel(teamCombination[0], teamCombination[1]);
+                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date());
                 teamCombination[0].matches.push(match);
                 teamCombination[1].matches.push(match);
                 self.matches.push(match);
@@ -30,7 +31,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
 
             if (self.homeAndAway()) {
                 ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                    var match = new matchViewModel(teamCombination[1], teamCombination[0]);
+                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date());
                     teamCombination[0].matches.push(match);
                     teamCombination[1].matches.push(match);
                     self.matches.push(match);

@@ -3,3 +3,6 @@ div.hmeta{color:#333}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input.input-verysmall{width:30px}
 td.fixtureTextItem{padding:13px}
+div.team:not(:last-child){margin-bottom:20px}
+i:hover{opacity:.7}
+.form-actions{background-color:inherit;border-top:none;margin-top:0;padding:0}
