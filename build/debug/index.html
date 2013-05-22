@@ -29,7 +29,7 @@
       </header>
     </div>
     <div class="container">       
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs row">
         <!-- ko foreach: categories -->
         <li><a data-toggle="tab" data-bind="html: name, attr: { href: '#'+ id() }"></a></li>
         <!-- /ko -->
@@ -37,13 +37,14 @@
         <li><a href="#" data-bind="click: addCategory"> <i class="icon-plus"></i></a></li>
         <!-- /ko-->
       </ul>
-      <div class="tabbable">
+      <div class="tabbable row">
         <div data-bind="foreach: { data: categories, as: 'category' }" class="tab-content">
           <div data-bind="attr: { id: id }" class="tab-pane">
             <!-- ko if: $root.admin-->
-            <div data-bind="template: { name: 'categoryConfigurationTemplate', data: category }"></div>
+            <div data-bind="template: { name: 'categoryConfigurationTemplate', data: category }" class="row-fluid"></div>
             <!-- /ko-->
-            <div data-bind="template: { name: 'fixtureTemplate', data: matches }"></div>
+            <div data-bind="template: { name: 'fixtureTemplate', data: matches }" class="row-fluid"></div>
+            <div data-bind="template: { name: 'leaderboardTemplate', data: teams }" class="row-fluid"></div>
           </div>
         </div>
       </div>
@@ -118,6 +119,37 @@
             <input type="number" data-bind="value: awayScore()" class="input-verysmall">
           </td>
           <td data-bind="text: awayTeam().name()" class="fixtureTextItem"></td>
+        </tr>
+      </tbody>
+    </table></script><script type="text/html" id="leaderboardTemplate"> 
+    <h2>Leaderboard</h2>
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>M</th>
+          <th>M+</th>
+          <th>M-</th>
+          <th>M=</th>
+          <th>D+</th>
+          <th>D-</th>
+          <th>D+/-</th>
+          <th>Ptn</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: $data">
+        <tr>
+          <td data-bind="text: $index() + 1"></td>
+          <td data-bind="text: name"></td>
+          <td data-bind="text: played"></td>
+          <td data-bind="text: won"></td>
+          <td data-bind="text: lost"></td>
+          <td data-bind="text: draws"></td>
+          <td data-bind="text: goalsFor"></td>
+          <td data-bind="text: goalsAgainst"></td>
+          <td data-bind="text: goalsDifference"></td>
+          <td data-bind="text: points"></td>
         </tr>
       </tbody>
     </table></script>

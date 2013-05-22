@@ -2,7 +2,7 @@ extends layout/layout
 
 block content   
     .container        
-        ul.nav.nav-tabs
+        ul.nav.nav-tabs.row
             // ko foreach: categories 
             li
                 a(data-toggle='tab', data-bind='html: name, attr: { href: \'#\'+ id() }')
@@ -13,16 +13,18 @@ block content
                     i.icon-plus
             // /ko
 
-        .tabbable
+        .tabbable.row
             .tab-content(data-bind='foreach: { data: categories, as: \'category\' }')
                 .tab-pane(data-bind='attr: { id: id }')
                     // ko if: $root.admin
-                    div(data-bind='template: { name: \'categoryConfigurationTemplate\', data: category }')
+                    .row-fluid(data-bind='template: { name: \'categoryConfigurationTemplate\', data: category }')
                     // /ko
-                    div(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
+                    .row-fluid(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
+                    .row-fluid(data-bind='template: { name: \'leaderboardTemplate\', data: teams }')
         
     hr
 
 block scripts
     include templates/categoryConfigurationTemplate   
-    include templates/fixtureTemplate   
+    include templates/fixtureTemplate
+    include templates/leaderboardTemplate      
