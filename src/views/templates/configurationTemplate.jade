@@ -16,19 +16,16 @@
             input(type='checkbox', data-bind='checked: homeAndAway, attr: { id: id() + \'HomeAndAway\' }')
 
     .control-group
-        label.control-label Teams
+        label.control-label Teams        
         .controls.teams(data-bind='foreach: teams')
             .team
                 input.input-xlarge(type='text', data-bind='value: name, valueUpdate: \'afterkeydown\'')
-                // ko if: $index() === 0
-                a(href='#', data-bind='click: category.addTeam') 
-                    i.icon-plus
-                // /ko
-                // ko if: $index() > 0
-                a(href='#', data-bind='if: $index != 0, click: category.removeTeam') 
+                a(href='#', data-bind='if: category.teams().length > 1, click: category.removeTeam') 
                     i.icon-trash
-                // /ko
     .form-actions
-        button.btn(data-bind='click: generateFixture') Generate fixture
+        button.btn(data-bind='click: category.addTeam') Add team  
+            i.icon-plus 
+        button.btn(data-bind='click: generateFixture') Generate fixture 
+            i.icon-ok
 
 | </script>
