@@ -3,6 +3,7 @@ define(['knockout', 'categoryViewModel'], function (ko, categoryViewModel) {
     return function appViewModel() {
         var self = this;
 
+        self.admin = ko.observable('true');
         self.categories = ko.observableArray([new categoryViewModel('Category 1')]);
 
         self.addCategory = function () {

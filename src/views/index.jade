@@ -5,16 +5,20 @@ block content
         ul.nav.nav-tabs
             // ko foreach: categories 
             li
-                a(data-toggle='tab', data-bind='html: name, attr: { href: \'#\'+ name().replace(\' \',\'\') }')
+                a(data-toggle='tab', data-bind='html: name, attr: { href: \'#\'+ id() }')
             // /ko 
+            // ko if: $root.admin
             li
                 a(href='#',data-bind='click: addCategory') 
                     i.icon-plus
-        
+            // /ko
+
         .tabbable
             .tab-content(data-bind='foreach: { data: categories, as: \'category\' }')
                 .tab-pane(data-bind='attr: { id: id }')
+                    // ko if: $root.admin
                     div(data-bind='template: { name: \'categoryConfigurationTemplate\', data: category }')
+                    // /ko
                     div(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
         
     hr

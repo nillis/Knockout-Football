@@ -11,9 +11,9 @@
             input.input-xlarge(type='date', data-bind='value: date')
 
     .control-group
-        label.control-label Home and away
+        label.control-label(data-bind='attr: { for: id() + \'HomeAndAway\' }') Home and away
         .controls
-            input(type='checkbox', data-bind='checked: homeAndAway')
+            input(type='checkbox', data-bind='checked: homeAndAway, attr: { id: id() + \'HomeAndAway\' }')
 
     .control-group
         label.control-label Teams
