@@ -17,14 +17,14 @@ block content
             .tab-content(data-bind='foreach: { data: categories, as: \'category\' }')
                 .tab-pane(data-bind='attr: { id: id }')
                     // ko if: $root.admin
-                    .row-fluid(data-bind='template: { name: \'categoryConfigurationTemplate\', data: category }')
+                    .row-fluid(data-bind='template: { name: \'configurationTemplate\', data: category }')
                     // /ko
                     .row-fluid(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
-                    .row-fluid(data-bind='template: { name: \'leaderboardTemplate\', data: teams }')
+                    .row-fluid(data-bind='template: { name: \'leaderboardTemplate\', data: leaderboard }')
         
     hr
 
 block scripts
-    include templates/categoryConfigurationTemplate   
+    include templates/configurationTemplate   
     include templates/fixtureTemplate
     include templates/leaderboardTemplate      

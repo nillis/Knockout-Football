@@ -599,13 +599,13 @@ define("combinations", function(){});
 // Category viewmodel class
 define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
     return function categoryViewModel(name) {
-        var self = this;       
+        var self = this;
 
         self.name = ko.observable(name);
 
-        self.id = ko.computed(function() {
-            return self.name().replace(' ','');
-        }, this);
+        self.id = ko.computed(function () {
+            return self.name().replace(' ', '');
+        }, self);
 
         self.date = ko.observable(new Date().toJSON().slice(0, 10));
         self.homeAndAway = ko.observable(false);
@@ -622,6 +622,10 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
 
         self.generateFixture = function () {
             self.matches.removeAll();
+
+            ko.utils.arrayForEach(self.teams(), function (team) {
+                team.matches.removeAll();
+            });
 
             var teamCombinations = getCombinations(self.teams(), 2);
 
@@ -640,15 +644,37 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
                     self.matches.push(match);
                 });
             }
+
+            $('#' + self.id()).delegate('input[type=number]', 'change', function () {
+                self.updateLeaderboard();
+            });
         };
 
-        self.update = function () {
+        self.sortFixture = function () {
             self.matches.sort(function (left, right) {
                 return left.date() == right.date() && left.time() == right.time() ? 0 :
                     left.date() != right.date() ?
                     (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
-            });            
-        };      
+            });
+        };
+
+        self.leaderboard = ko.computed(function() {
+            return self.teams().slice().sort(function (left, right) {
+                if (left.points() > right.points()) return -1;
+                else if (left.points() < right.points()) return 1;
+                else {
+                    if (left.goalsDifference() > right.goalsDifference()) return -1;
+                    else if (left.goalsDifference() < right.goalsDifference()) return 1;
+                    else {
+                        if (left.goalsFor() > right.goalsFor()) return -1;
+                        else if (left.goalsFor() < right.goalsFor()) return 1;
+                        else {
+                            return 0;
+                        }
+                    }
+                }
+            });
+        }, self);
     };
 });
 // App viewmodel class
@@ -816,6 +842,7 @@ requirejs.config({
         'teamViewModel': 'models/teamViewModel'
     },
     shim: {
+        'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
         'appViewModel': ['categoryViewModel'],
         'categoryViewModel': ['teamViewModel', 'matchViewModel', 'combinations'],

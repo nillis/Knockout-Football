@@ -20,6 +20,7 @@ requirejs.config({
         'teamViewModel': 'models/teamViewModel'
     },
     shim: {
+        'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
         'appViewModel': ['categoryViewModel'],
         'categoryViewModel': ['teamViewModel', 'matchViewModel', 'combinations'],

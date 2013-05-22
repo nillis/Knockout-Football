@@ -41,15 +41,15 @@
         <div data-bind="foreach: { data: categories, as: 'category' }" class="tab-content">
           <div data-bind="attr: { id: id }" class="tab-pane">
             <!-- ko if: $root.admin-->
-            <div data-bind="template: { name: 'categoryConfigurationTemplate', data: category }" class="row-fluid"></div>
+            <div data-bind="template: { name: 'configurationTemplate', data: category }" class="row-fluid"></div>
             <!-- /ko-->
             <div data-bind="template: { name: 'fixtureTemplate', data: matches }" class="row-fluid"></div>
-            <div data-bind="template: { name: 'leaderboardTemplate', data: teams }" class="row-fluid"></div>
+            <div data-bind="template: { name: 'leaderboardTemplate', data: leaderboard }" class="row-fluid"></div>
           </div>
         </div>
       </div>
     </div>
-    <hr><script type="text/html" id="categoryConfigurationTemplate"> 
+    <hr><script type="text/html" id="configurationTemplate"> 
     <div class="form-horizontal well">
       <div class="control-group">
         <label class="control-label">Naam</label>
@@ -87,7 +87,7 @@
     </div></script><script type="text/html" id="fixtureTemplate"> 
     <h2>Fixture
       <!-- ko if: $root.admin-->
-      <button data-bind="click: category.update" class="btn"><i class="icon-refresh"></i></button>
+      <button data-bind="click: category.sortFixture" class="btn"><i class="icon-refresh"></i></button>
       <!-- /ko-->
     </h2>
     <table class="table table-striped table-hover">
@@ -123,7 +123,7 @@
       </tbody>
     </table></script><script type="text/html" id="leaderboardTemplate"> 
     <h2>Leaderboard</h2>
-    <table class="table table-striped table-hover table-bordered">
+    <table class="table table-striped table-hover table-bordered tablesorter leaderboard">
       <thead>
         <tr>
           <th>#</th>
