@@ -13,7 +13,7 @@ block content
         
         .tabbable
             .tab-content(data-bind='foreach: { data: categories, as: \'category\' }')
-                .tab-pane(data-bind='attr: { id: name().replace(\' \',\'\') }')
+                .tab-pane(data-bind='attr: { id: id }')
                     div(data-bind='template: { name: \'categoryConfigurationTemplate\', data: category }')
                     div(data-bind='template: { name: \'fixtureTemplate\', data: matches }')
         

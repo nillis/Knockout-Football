@@ -549,10 +549,15 @@ define("combinations", function(){});
 // Category viewmodel class
 define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
     return function categoryViewModel(name) {
-        var self = this;
+        var self = this;       
 
         self.name = ko.observable(name);
-        self.date = ko.observable(new Date().toJSON().slice(0,10));
+
+        self.id = ko.computed(function() {
+            return self.name().replace(' ','');
+        }, this);
+
+        self.date = ko.observable(new Date().toJSON().slice(0, 10));
         self.homeAndAway = ko.observable(false);
         self.teams = ko.observableArray([new teamViewModel()]);
         self.matches = ko.observableArray();
@@ -586,6 +591,14 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
                 });
             }
         };
+
+        self.update = function () {
+            self.matches.sort(function (left, right) {
+                return left.date() == right.date() && left.time() == right.time() ? 0 :
+                    left.date() != right.date() ?
+                    (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
+            });            
+        };      
     };
 });
 // App viewmodel class
@@ -593,15 +606,12 @@ define('appViewModel',['knockout', 'categoryViewModel'], function (ko, categoryV
     return function appViewModel() {
         var self = this;
 
+        self.admin = ko.observable(true);
         self.categories = ko.observableArray([new categoryViewModel('Category 1')]);
 
         self.addCategory = function () {
             self.categories.push(new categoryViewModel('Category ' + (self.categories().length + 1)));
         };
-
-        $('#addCategory').on('click', function () {
-            self.addCategory();
-        });
     };
 });
 /**
@@ -736,13 +746,13 @@ define('domReady',[],function () {
 
 requirejs.config({
     include: [
-        'bootstrap'     
-    ],          
+            'bootstrap'
+    ],
     paths: {
         // Lib             
         'jquery': '../libs/jquery/jquery-2.0.0.min',
         'knockout': '../libs/knockout/knockout-2.2.1',
-        'bootstrap': '../libs/bootstrap/bootstrap.min',    
+        'bootstrap': '../libs/bootstrap/bootstrap.min',
         'domReady': '../libs/require/domReady',
 
         // Utils
@@ -758,7 +768,7 @@ requirejs.config({
     shim: {
         'bootstrap': ['jquery'],
         'appViewModel': ['categoryViewModel'],
-        'categoryViewModel': ['teamViewModel','matchViewModel', 'combinations'],
+        'categoryViewModel': ['teamViewModel', 'matchViewModel', 'combinations'],
         'teamViewModel': ['matchViewModel']
     }
 });
@@ -767,7 +777,7 @@ require(['jquery', 'knockout', 'appViewModel', 'domReady!'], function ($, ko, ap
     ko.applyBindings(new appViewModel());
 
     $('.nav-tabs li:first-child').addClass('active');
-    $('.tab-pane:first-child').addClass('active');   
+    $('.tab-pane:first-child').addClass('active');
 });
 define("app", function(){});
 

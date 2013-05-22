@@ -1,10 +1,15 @@
 // Category viewmodel class
 define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
     return function categoryViewModel(name) {
-        var self = this;
+        var self = this;       
 
         self.name = ko.observable(name);
-        self.date = ko.observable(new Date().toJSON().slice(0,10));
+
+        self.id = ko.computed(function() {
+            return self.name().replace(' ','');
+        }, this);
+
+        self.date = ko.observable(new Date().toJSON().slice(0, 10));
         self.homeAndAway = ko.observable(false);
         self.teams = ko.observableArray([new teamViewModel()]);
         self.matches = ko.observableArray();
@@ -38,5 +43,13 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
                 });
             }
         };
+
+        self.update = function () {
+            self.matches.sort(function (left, right) {
+                return left.date() == right.date() && left.time() == right.time() ? 0 :
+                    left.date() != right.date() ?
+                    (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
+            });            
+        };      
     };
 });
