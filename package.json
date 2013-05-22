@@ -10,20 +10,22 @@
   },
   "keywords": [
     "knockout",
-    "bootstrap",
-    "express"
+    "bootstrap"
   ],
   "dependencies": {
     "jade": "*",
     "stylus": "*",
     "grunt": "*",
-    "grunt-contrib-stylus": "*",
+    "grunt-contrib-clean": "*",
     "grunt-contrib-jade": "*",
-    "grunt-contrib-copy": "*",
+    "grunt-contrib-stylus": "*",    
+    "grunt-contrib-copy": "*",   
+    "grunt-contrib-requirejs": "*",    
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-cssmin": "*",
     "grunt-contrib-jshint": "*",
-    "grunt-contrib-requirejs": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-contrib-clean": "*"
+    "grunt-contrib-watch": "*"
   },
   "noAnalyze": true,
   "license": "Apache",
