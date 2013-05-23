@@ -4,8 +4,8 @@ requirejs.config({
     ],
     paths: {
         // Lib             
-        'jquery': '../libs/jquery/jquery-2.0.0.min',
-        'knockout': '../libs/knockout/knockout-2.2.1',
+        'jquery': '../libs/jquery/jquery-2.0.0',
+        'knockout': '../libs/knockout/knockout-2.2.1.debug',
         'bootstrap': '../libs/bootstrap/bootstrap.min',
         'domReady': '../libs/require/domReady',
 

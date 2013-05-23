@@ -54,7 +54,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
                     left.date() != right.date() ?
                     (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
             });
-        }, self);
+        }, self).extend({ throttle: 1 });
 
         self.leaderboard = ko.computed(function() {
             return self.teams().slice().sort(function (left, right) {
@@ -72,6 +72,6 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
                     }
                 }
             });
-        }, self);
+        }, self).extend({ throttle: 1 });
     };
 });
