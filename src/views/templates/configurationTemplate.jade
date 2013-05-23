@@ -23,7 +23,7 @@
         .controls.teams(data-bind='foreach: teams')
             .team
                 input.input-xlarge(type='text', data-bind='value: name, valueUpdate: \'afterkeydown\'')
-                a(href='#', data-bind='if: poule.teams().length > 1, click: poule.removeTeam') 
+                a(href='#', data-bind='if: poule.teams().length > 2, click: poule.removeTeam') 
                     i.icon-trash
         .controls
             button.btn(data-bind='click: poule.addTeam') Add team 

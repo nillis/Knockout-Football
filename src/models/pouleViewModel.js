@@ -7,7 +7,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         self.homeAndAway = homeAndAway;
         // Teams
 
-        self.teams = ko.observableArray([new teamViewModel()]);
+        self.teams = ko.observableArray([new teamViewModel(), new teamViewModel()]);
 
         self.removeTeam = function (team) {
             self.teams.remove(team);

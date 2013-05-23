@@ -11,23 +11,31 @@ table.table.table-striped.table-hover
         tr
             th Datum
             th Uur
-            th Thuis
+            th.text-center Thuis
             th
             th
             th
-            th Uit
+            th.text-center Uit
     tbody(data-bind='foreach: $data')
         tr
+            // ko if: $root.admin
             td
                 input.input-medium(type='date', data-bind='value: date')
             td
                 input.input-small(type='time', data-bind='value: time')
-            td.fixtureTextItem(data-bind='text: homeTeam().name()')
+            // /ko
+            // ko if: !$root.admin()
             td
+                input.input-medium(type='date', disabled, data-bind='value: date')
+            td
+                input.input-small(type='time', disabled, data-bind='value: time')
+            // /ko
+            td.fixtureTextItem.text-center(data-bind='text: homeTeam().name()')
+            td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
-            td.fixtureTextItem -
-            td
+            td.fixtureTextItem.text-center -
+            td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
-            td.fixtureTextItem(data-bind='text: awayTeam().name()')
+            td.fixtureTextItem.text-center(data-bind='text: awayTeam().name()')
 
 | </script>

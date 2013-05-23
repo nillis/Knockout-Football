@@ -12853,7 +12853,7 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         self.homeAndAway = homeAndAway;
         // Teams
 
-        self.teams = ko.observableArray([new teamViewModel()]);
+        self.teams = ko.observableArray([new teamViewModel(), new teamViewModel()]);
 
         self.removeTeam = function (team) {
             self.teams.remove(team);

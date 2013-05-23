@@ -3,7 +3,12 @@ box-shadow()
   -moz-box-shadow arguments
   box-shadow arguments
 
-h1,h2,h3,h4,h5,h6
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
     font-family 'Open Sans', sans-serif;
     font-weight normal;
     margin 2px 0px 5px 0px;
@@ -13,10 +18,17 @@ h1,h2,h3,h4,h5,h6
 div.hmeta 
     color #333;
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button 
+::-webkit-outer-spin-button,
+::-webkit-inner-spin-button 
     -webkit-appearance none;
     margin 0;
+
+input[disabled]::-webkit-calendar-picker-indicator
+    display none
+
+.table th,
+.table td
+    text-align center
 
 input.input-verysmall 
     width 30px;
