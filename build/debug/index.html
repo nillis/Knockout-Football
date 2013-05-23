@@ -111,11 +111,11 @@
           </td>
           <td data-bind="text: homeTeam().name()" class="fixtureTextItem"></td>
           <td>
-            <input type="number" data-bind="value: homeScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+            <input type="number" min="0" data-bind="value: homeScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
           </td>
           <td class="fixtureTextItem">-</td>
           <td>
-            <input type="number" data-bind="value: awayScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+            <input type="number" min="0" data-bind="value: awayScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
           </td>
           <td data-bind="text: awayTeam().name()" class="fixtureTextItem"></td>
         </tr>

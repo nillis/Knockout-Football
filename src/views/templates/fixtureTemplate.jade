@@ -24,10 +24,10 @@ table.table.table-striped.table-hover
                 input.input-small(type='time', data-bind='value: time')
             td.fixtureTextItem(data-bind='text: homeTeam().name()')
             td
-                input.input-verysmall(type='number', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
+                input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem -
             td
-                input.input-verysmall(type='number', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
+                input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem(data-bind='text: awayTeam().name()')
 
 | </script>
