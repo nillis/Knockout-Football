@@ -31,7 +31,9 @@
     <div class="container">       
       <ul class="nav nav-tabs row">
         <!-- ko foreach: categories -->
-        <li><a data-toggle="tab" data-bind="attr: { href: '#'+ id() }"><span data-bind="text: name"></span><span data-bind="if: $root.categories().length &gt; 1 &amp;&amp; $root.admin, click: $root.removeCategory"> <i class="icon-trash"></i></span></a></li>
+        <li><a data-toggle="tab" data-bind="attr: { href: '#'+ id() }"><span data-bind="text: name"></span>
+            <!-- ko if: $root.admin--><span data-bind="if: $root.categories().length &gt; 1 &amp;&amp; $root.admin, click: $root.removeCategory"> <i class="icon-trash link"></i></span>
+            <!-- /ko--></a></li>
         <!-- /ko -->
         <!-- ko if: $root.admin-->
         <li><a href="#" data-bind="click: addCategory"> <i class="icon-plus"></i></a></li>

@@ -5,4 +5,5 @@ input.input-verysmall{width:30px}
 td.fixtureTextItem{padding:13px}
 div.team:not(:last-child){margin-bottom:20px}
 i:hover{opacity:.7}
+.link{cursor:pointer}
 .form-actions{background-color:inherit;border-top:none;margin-top:0;padding:0}
