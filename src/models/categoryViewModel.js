@@ -48,15 +48,19 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             }
         };
 
-        self.fixture = ko.computed(function() {
-            return self.matches().slice().sort(function (left, right) {
+        self.fixture = ko.computed(function () {
+            return self.matches();
+        }, self).extend({ throttle: 1 });
+
+        self.sortFixture = function () {
+            self.matches.sort(function (left, right) {
                 return left.date() == right.date() && left.time() == right.time() ? 0 :
                     left.date() != right.date() ?
                     (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
             });
-        }, self).extend({ throttle: 1 });
+        };
 
-        self.leaderboard = ko.computed(function() {
+        self.leaderboard = ko.computed(function () {
             return self.teams().slice().sort(function (left, right) {
                 if (left.points() > right.points()) return -1;
                 else if (left.points() < right.points()) return 1;
