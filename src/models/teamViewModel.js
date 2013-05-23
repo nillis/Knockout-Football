@@ -1,5 +1,5 @@
 // Team viewmodel class
-define(['knockout', 'matchViewModel'], function (ko, matchViewModel) {
+define(['knockout'], function (ko) {
     return function teamViewModel(name) {
         var self = this;
 

@@ -45,8 +45,10 @@
             <!-- ko if: $root.admin-->
             <div data-bind="template: { name: 'configurationTemplate', data: category }" class="row-fluid"></div>
             <!-- /ko-->
+            <!-- ko foreach: poules-->
             <div data-bind="template: { name: 'fixtureTemplate', data: fixture }" class="row-fluid"></div>
             <div data-bind="template: { name: 'leaderboardTemplate', data: leaderboard }" class="row-fluid"></div>
+            <!-- /ko-->
           </div>
         </div>
       </div>
@@ -71,16 +73,21 @@
           <input type="checkbox" data-bind="checked: homeAndAway, attr: { id: id() + 'HomeAndAway' }">
         </div>
       </div>
+      <!-- ko foreach: { data: poules, as: 'poule' }-->
       <div class="control-group">
-        <label class="control-label">Teams        </label>
+        <label class="control-label">Teams<a href="#" data-bind="if: category.poules().length &gt; 1, click: category.removePoule"> <i class="icon-trash">       </i></a></label>
         <div data-bind="foreach: teams" class="controls teams">
           <div class="team">
-            <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge"><a href="#" data-bind="if: category.teams().length &gt; 1, click: category.removeTeam"> <i class="icon-trash"></i></a>
+            <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge"><a href="#" data-bind="if: poule.teams().length &gt; 1, click: poule.removeTeam"> <i class="icon-trash"></i></a>
           </div>
         </div>
+        <div class="controls">
+          <button data-bind="click: poule.addTeam" class="btn">Add team <i class="icon-plus"> </i></button>
+        </div>
       </div>
+      <!-- /ko-->
       <div class="form-actions">
-        <button data-bind="click: category.addTeam" class="btn">Add team  <i class="icon-plus"> </i></button>
+        <button data-bind="click: category.addPoule" class="btn">Add poule  <i class="icon-plus"> </i></button>
         <button data-bind="click: generateFixture" class="btn">Generate fixture <i class="icon-ok"></i></button>
       </div>
     </div></script><script type="text/html" id="fixtureTemplate"> 

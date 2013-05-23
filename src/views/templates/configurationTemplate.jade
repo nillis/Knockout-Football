@@ -14,16 +14,24 @@
         label.control-label(data-bind='attr: { for: id() + \'HomeAndAway\' }') Home and away
         .controls
             input(type='checkbox', data-bind='checked: homeAndAway, attr: { id: id() + \'HomeAndAway\' }')
-
+    
+    // ko foreach: { data: poules, as: 'poule' }
     .control-group
-        label.control-label Teams        
+        label.control-label Teams
+            a(href='#', data-bind='if: category.poules().length > 1, click: category.removePoule') 
+                    i.icon-trash        
         .controls.teams(data-bind='foreach: teams')
             .team
                 input.input-xlarge(type='text', data-bind='value: name, valueUpdate: \'afterkeydown\'')
-                a(href='#', data-bind='if: category.teams().length > 1, click: category.removeTeam') 
+                a(href='#', data-bind='if: poule.teams().length > 1, click: poule.removeTeam') 
                     i.icon-trash
+        .controls
+            button.btn(data-bind='click: poule.addTeam') Add team 
+                i.icon-plus 
+    // /ko
+                
     .form-actions
-        button.btn(data-bind='click: category.addTeam') Add team  
+        button.btn(data-bind='click: category.addPoule') Add poule  
             i.icon-plus 
         button.btn(data-bind='click: generateFixture') Generate fixture 
             i.icon-ok

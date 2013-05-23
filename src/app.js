@@ -14,17 +14,20 @@ requirejs.config({
 
         // Models
         'appViewModel': 'models/appViewModel',
-
         'categoryViewModel': 'models/categoryViewModel',
         'matchViewModel': 'models/matchViewModel',
+        'pouleViewModel': 'models/pouleViewModel',
         'teamViewModel': 'models/teamViewModel'
     },
     shim: {
         'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
-        'appViewModel': ['categoryViewModel'],
-        'categoryViewModel': ['teamViewModel', 'matchViewModel', 'combinations'],
-        'teamViewModel': ['matchViewModel']
+
+        'appViewModel': ['knockout','categoryViewModel'],
+        'categoryViewModel': ['knockout', 'pouleViewModel'],
+        'matchViewModel': ['knockout'],
+        'pouleViewModel': ['knockout', 'teamViewModel', 'matchViewModel', 'combinations'],
+        'teamViewModel': ['knockout']
     }
 });
 

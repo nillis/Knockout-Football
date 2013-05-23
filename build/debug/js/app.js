@@ -12745,22 +12745,8 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 })(window,document,navigator,window["jQuery"]);
 })();
 
-// Match viewmodel class
-define('matchViewModel',['knockout'], function (ko) {
-    return function matchViewModel(homeTeam, awayTeam, date) {
-        var self = this;
-
-        self.homeTeam = ko.observable(homeTeam);
-        self.homeScore = ko.observable();
-        self.awayTeam = ko.observable(awayTeam);
-        self.awayScore = ko.observable();
-
-        self.date = ko.observable(date);
-        self.time = ko.observable('12:00:00');
-    };
-});
 // Team viewmodel class
-define('teamViewModel',['knockout', 'matchViewModel'], function (ko, matchViewModel) {
+define('teamViewModel',['knockout'], function (ko) {
     return function teamViewModel(name) {
         var self = this;
 
@@ -12824,6 +12810,20 @@ define('teamViewModel',['knockout', 'matchViewModel'], function (ko, matchViewMo
         }, self);
     };
 });
+// Match viewmodel class
+define('matchViewModel',['knockout'], function (ko) {
+    return function matchViewModel(homeTeam, awayTeam, date) {
+        var self = this;
+
+        self.homeTeam = ko.observable(homeTeam);
+        self.homeScore = ko.observable();
+        self.awayTeam = ko.observable(awayTeam);
+        self.awayScore = ko.observable();
+
+        self.date = ko.observable(date);
+        self.time = ko.observable('12:00:00');
+    };
+});
 var getCombinations = function (a, n) {
     var fn = function (n, src, got, all) {
         if (n === 0) {
@@ -12844,21 +12844,16 @@ var getCombinations = function (a, n) {
 };
 define("combinations", function(){});
 
-// Category viewmodel class
-define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
-    return function categoryViewModel(name) {
+// Poule viewmodel class
+define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
+    return function pouleViewModel(date, homeAndAway) {
         var self = this;
 
-        self.name = ko.observable(name);
+        self.date = date;
+        self.homeAndAway = homeAndAway;
+        // Teams
 
-        self.id = ko.computed(function () {
-            return self.name().replace(' ', '');
-        }, self);
-
-        self.date = ko.observable(new Date().toJSON().slice(0, 10));
-        self.homeAndAway = ko.observable(false);
         self.teams = ko.observableArray([new teamViewModel()]);
-        self.matches = ko.observableArray();
 
         self.removeTeam = function (team) {
             self.teams.remove(team);
@@ -12867,6 +12862,14 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
         self.addTeam = function () {
             self.teams.push(new teamViewModel());
         };
+
+        // Fixture
+
+        self.matches = ko.observableArray();
+
+        self.fixture = ko.computed(function () {
+            return self.matches();
+        }, self).extend({ throttle: 1 });
 
         self.generateFixture = function () {
             self.matches.removeAll();
@@ -12894,10 +12897,6 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
             }
         };
 
-        self.fixture = ko.computed(function () {
-            return self.matches();
-        }, self).extend({ throttle: 1 });
-
         self.sortFixture = function () {
             self.matches.sort(function (left, right) {
                 return left.date() == right.date() && left.time() == right.time() ? 0 :
@@ -12905,6 +12904,8 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
                     (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
             });
         };
+
+        // Leaderboard
 
         self.leaderboard = ko.computed(function () {
             return self.teams().slice().sort(function (left, right) {
@@ -12923,6 +12924,36 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
                 }
             });
         }, self).extend({ throttle: 1 });
+    };
+});
+// Category viewmodel class
+define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
+    return function categoryViewModel(name) {
+        var self = this;
+
+        self.name = ko.observable(name);
+
+        self.id = ko.computed(function () {
+            return self.name().replace(' ', '');
+        }, self);
+
+        self.date = ko.observable(new Date().toJSON().slice(0, 10));
+        self.homeAndAway = ko.observable(false);
+        self.poules = ko.observableArray([new pouleViewModel(self.date, self.homeAndAway)]);
+
+        self.removePoule = function (poule) {
+            self.poules.remove(poule);
+        };
+
+        self.addPoule = function () {
+            self.poules.push(new pouleViewModel(self.date, self.homeAndAway));
+        };
+
+        self.generateFixture = function () {
+            ko.utils.arrayForEach(self.poules(), function (poule) {
+                poule.generateFixture();
+            });
+        };
     };
 });
 // App viewmodel class
@@ -13088,17 +13119,20 @@ requirejs.config({
 
         // Models
         'appViewModel': 'models/appViewModel',
-
         'categoryViewModel': 'models/categoryViewModel',
         'matchViewModel': 'models/matchViewModel',
+        'pouleViewModel': 'models/pouleViewModel',
         'teamViewModel': 'models/teamViewModel'
     },
     shim: {
         'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
-        'appViewModel': ['categoryViewModel'],
-        'categoryViewModel': ['teamViewModel', 'matchViewModel', 'combinations'],
-        'teamViewModel': ['matchViewModel']
+
+        'appViewModel': ['knockout','categoryViewModel'],
+        'categoryViewModel': ['knockout', 'pouleViewModel'],
+        'matchViewModel': ['knockout'],
+        'pouleViewModel': ['knockout', 'teamViewModel', 'matchViewModel', 'combinations'],
+        'teamViewModel': ['knockout']
     }
 });
 
