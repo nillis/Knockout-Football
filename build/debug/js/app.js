@@ -644,19 +644,15 @@ define('categoryViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'comb
                     self.matches.push(match);
                 });
             }
-
-            $('#' + self.id()).delegate('input[type=number]', 'change', function () {
-                self.updateLeaderboard();
-            });
         };
 
-        self.sortFixture = function () {
-            self.matches.sort(function (left, right) {
+        self.fixture = ko.computed(function() {
+            return self.matches().slice().sort(function (left, right) {
                 return left.date() == right.date() && left.time() == right.time() ? 0 :
                     left.date() != right.date() ?
                     (left.date() > right.date() ? 1 : -1) : (left.time() > right.time() ? 1 : -1);
             });
-        };
+        }, self);
 
         self.leaderboard = ko.computed(function() {
             return self.teams().slice().sort(function (left, right) {
