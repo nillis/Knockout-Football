@@ -5,7 +5,10 @@ block content
         ul.nav.nav-tabs.row
             // ko foreach: categories 
             li
-                a(data-toggle='tab', data-bind='html: name, attr: { href: \'#\'+ id() }')
+                a(data-toggle='tab', data-bind='attr: { href: \'#\'+ id() }')
+                    span(data-bind='text: name')
+                    span(data-bind='if: $root.categories().length > 1 && $root.admin, click: $root.removeCategory') 
+                        i.icon-trash
             // /ko 
             // ko if: $root.admin
             li

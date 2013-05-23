@@ -4,10 +4,14 @@ define(['knockout', 'categoryViewModel'], function (ko, categoryViewModel) {
         var self = this;
 
         self.admin = ko.observable('true');
-        self.categories = ko.observableArray([new categoryViewModel('Category 1')]);
+        self.categories = ko.observableArray([new categoryViewModel('Category')]);
 
         self.addCategory = function () {
-            self.categories.push(new categoryViewModel('Category ' + (self.categories().length + 1)));
+            self.categories.push(new categoryViewModel('Category'));
+        };
+
+        self.removeCategory = function (category) {
+            self.categories.remove(category);
         };
     };
 });
