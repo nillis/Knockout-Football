@@ -14,7 +14,7 @@ define(['knockout'], function (ko) {
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
-                return match.homeScore() && match.awayScore();
+                return match.homeScore() !== undefined && match.awayScore() !== undefined;
             });
         }, self);
 
