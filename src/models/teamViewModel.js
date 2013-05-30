@@ -10,7 +10,7 @@ define(['knockout'], function (ko) {
             return ko.utils.arrayFilter(self.pouleMatches(), function (match) {
                 return match.homeTeam() === self || match.awayTeam() === self;
             });
-        }, self).extend({ throttle: 1 });
+        }, self).extend({ throttle: 50 });
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
@@ -44,7 +44,7 @@ define(['knockout'], function (ko) {
             var goalsFor = 0;
 
             ko.utils.arrayForEach(self.playedMatches(), function (match) {
-                goalsFor += parseInt(match.homeTeam().name() === self.name() ? match.homeScore() : match.awayScore(), 10);
+                goalsFor += match.homeTeam().name() === self.name() ? match.homeScore() : match.awayScore();
             });
 
             return goalsFor;
@@ -54,7 +54,7 @@ define(['knockout'], function (ko) {
             var goalsAgainst = 0;
 
             ko.utils.arrayForEach(self.playedMatches(), function (match) {
-                goalsAgainst += parseInt(match.homeTeam().name() === self.name() ? match.awayScore() : match.homeScore(), 10);
+                goalsAgainst += match.homeTeam().name() === self.name() ? match.awayScore() : match.homeScore();
             });
 
             return goalsAgainst;
