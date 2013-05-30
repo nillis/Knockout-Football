@@ -117,6 +117,19 @@
           <td>
             <input type="time" data-bind="value: time" class="input-small">
           </td>
+          <td>
+            <select data-bind="options: $parents[1].teams, optionsText: 'name', value: homeTeam"></select>
+          </td>
+          <td class="text-center">
+            <input type="number" min="0" data-bind="value: homeScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+          </td>
+          <td class="fixtureTextItem text-center">-</td>
+          <td class="text-center">
+            <input type="number" min="0" data-bind="value: awayScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+          </td>
+          <td>
+            <select data-bind="options: $parents[1].teams, optionsText: 'name', value: awayTeam"></select>
+          </td>
           <!-- /ko-->
           <!-- ko if: !$root.admin()-->
           <td>
@@ -125,7 +138,6 @@
           <td>
             <input type="time" disabled data-bind="value: time" class="input-small">
           </td>
-          <!-- /ko-->
           <td data-bind="text: homeTeam().name()" class="fixtureTextItem text-center"></td>
           <td class="text-center">
             <input type="number" min="0" data-bind="value: homeScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
@@ -135,6 +147,7 @@
             <input type="number" min="0" data-bind="value: awayScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
           </td>
           <td data-bind="text: awayTeam().name()" class="fixtureTextItem text-center"></td>
+          <!-- /ko          -->
         </tr>
       </tbody>
     </table></script><script type="text/html" id="leaderboardTemplate"> 

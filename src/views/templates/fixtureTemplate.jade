@@ -23,13 +23,21 @@ table.table.table-striped.table-hover
                 input.input-medium(type='date', data-bind='value: date')
             td
                 input.input-small(type='time', data-bind='value: time')
+            td
+                select(data-bind='options: $parents[1].teams, optionsText: \'name\', value: homeTeam')
+            td.text-center
+                input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
+            td.fixtureTextItem.text-center -
+            td.text-center
+                input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
+            td
+                select(data-bind='options: $parents[1].teams, optionsText: \'name\', value: awayTeam')
             // /ko
             // ko if: !$root.admin()
             td
                 input.input-medium(type='date', disabled, data-bind='value: date')
             td
                 input.input-small(type='time', disabled, data-bind='value: time')
-            // /ko
             td.fixtureTextItem.text-center(data-bind='text: homeTeam().name()')
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
@@ -37,5 +45,5 @@ table.table.table-striped.table-hover
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem.text-center(data-bind='text: awayTeam().name()')
-
+            // /ko          
 | </script>
