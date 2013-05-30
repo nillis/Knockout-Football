@@ -12857,7 +12857,18 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
 
         self.date = date;
         self.homeAndAway = homeAndAway;
+
+        // Matches
+
         self.matches = ko.observableArray();
+
+        self.removeMatch = function (match) {
+            self.matches.remove(match);
+        };
+
+        self.addMatch= function () {
+            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date()));
+        };
 
         // Teams
 

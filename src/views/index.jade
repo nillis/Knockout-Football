@@ -24,7 +24,7 @@ block content
                     // ko if: $root.admin
                     .row-fluid(data-bind='template: { name: \'configurationTemplate\', data: category }')
                     // /ko
-                    // ko foreach: poules
+                    // ko foreach: { data: poules, as: 'poule' }
                     .row-fluid(data-bind='template: { name: \'fixtureTemplate\', data: fixture }')
                     .row-fluid(data-bind='template: { name: \'leaderboardTemplate\', data: leaderboard }')
                     // /ko

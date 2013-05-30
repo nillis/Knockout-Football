@@ -1,8 +1,10 @@
 | <script type="text/html" id="fixtureTemplate"> 
 
-h2 Fixture
+h2 Fixture  
     // ko if: $root.admin
-    button.btn(data-bind='click: category.sortFixture')
+    button.btn(data-bind='click: poule.addMatch') Add match
+        i.icon-plus
+    button.btn(data-bind='click: poule.sortFixture') Sort
         i.icon-resize-vertical
     // /ko
 
@@ -16,6 +18,9 @@ table.table.table-striped.table-hover
             th
             th
             th.text-center Uit
+            // ko if: $root.admin
+            th
+            // /ko
     tbody(data-bind='foreach: $data')
         tr
             // ko if: $root.admin
@@ -24,14 +29,17 @@ table.table.table-striped.table-hover
             td
                 input.input-small(type='time', data-bind='value: time')
             td
-                select(data-bind='options: $parents[1].teams, optionsText: \'name\', value: homeTeam')
+                select(data-bind='options: poule.teams, optionsText: \'name\', value: homeTeam')
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem.text-center -
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
             td
-                select(data-bind='options: $parents[1].teams, optionsText: \'name\', value: awayTeam')
+                select(data-bind='options: poule.teams, optionsText: \'name\', value: awayTeam')
+            td
+                a(href='#', data-bind='click: poule.removeMatch') 
+                    i.icon-trash
             // /ko
             // ko if: !$root.admin()
             td
@@ -45,5 +53,6 @@ table.table.table-striped.table-hover
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem.text-center(data-bind='text: awayTeam().name()')
-            // /ko          
+            // /ko    
+                
 | </script>
