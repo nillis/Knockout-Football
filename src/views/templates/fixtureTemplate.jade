@@ -29,14 +29,14 @@ table.table.table-striped.table-hover
             td
                 input.input-small(type='time', data-bind='value: time')
             td
-                select(data-bind='options: poule.teams, optionsText: \'name\', value: homeTeam')
+                select(data-bind='options: poule.teamOptions, optionsText: \'name\', value: homeTeam')
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: homeScore, valueUpdate: \'afterkeydown\'')
             td.fixtureTextItem.text-center -
             td.text-center
                 input.input-verysmall(type='number',min='0', data-bind='value: awayScore, valueUpdate: \'afterkeydown\'')
             td
-                select(data-bind='options: poule.teams, optionsText: \'name\', value: awayTeam')
+                select(data-bind='options: poule.teamOptions, optionsText: \'name\', value: awayTeam')
             td
                 a(href='#', data-bind='click: poule.removeMatch') 
                     i.icon-trash

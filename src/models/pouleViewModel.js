@@ -14,7 +14,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             self.matches.remove(match);
         };
 
-        self.addMatch= function () {
+        self.addMatch = function () {
             self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date()));
         };
 
@@ -23,6 +23,12 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         self.teams = ko.observableArray([new teamViewModel(self.matches), new teamViewModel(self.matches)]);
 
         self.removeTeam = function (team) {
+            var temp = self.matches().slice();
+
+            ko.utils.arrayForEach(temp, function (match) {
+                if (match.homeTeam().name() === team.name() || match.awayTeam().name() === team.name()) self.matches.remove(match);
+            });
+
             self.teams.remove(team);
         };
 
@@ -31,10 +37,13 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         // Fixture
+        self.teamOptions = ko.computed(function () {
+            return self.teams();
+        }, self).extend({ throttle: 10 });
 
         self.fixture = ko.computed(function () {
             return self.matches();
-        }, self).extend({ throttle: 1 });
+        }, self).extend({ throttle: 10 });
 
         self.generateFixture = function () {
             self.matches.removeAll();

@@ -10,7 +10,7 @@ define(['knockout'], function (ko) {
             return ko.utils.arrayFilter(self.pouleMatches(), function (match) {
                 return match.homeTeam() === self || match.awayTeam() === self;
             });
-        }, self);
+        }, self).extend({ throttle: 1 });
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
