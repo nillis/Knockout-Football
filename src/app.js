@@ -23,7 +23,7 @@ requirejs.config({
         'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
 
-        'appViewModel': ['knockout','categoryViewModel'],
+        'appViewModel': ['jquery','knockout','mapping','categoryViewModel'],
         'categoryViewModel': ['knockout', 'pouleViewModel'],
         'matchViewModel': ['knockout'],
         'pouleViewModel': ['knockout', 'teamViewModel', 'matchViewModel', 'combinations'],

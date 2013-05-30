@@ -11,4 +11,15 @@
                             .control-group
                                 label.control-label(for='admin') Admin
                                 .controls
-                                    input(type='checkbox', id='admin', data-bind='checked: admin')                   
+                                    input(type='checkbox', id='admin', data-bind='checked: admin')
+                            .control-group
+                                .controls
+                                    .input-append
+                                        input(type='file', id='loadfileName')
+                                        button.btn(data-bind='click: load') Load
+                                .controls
+                                    .input-append
+                                        input(type='text', id='savefileName')
+                                        button.btn(data-bind='click: save') Save
+                                    output   
+                                                     
