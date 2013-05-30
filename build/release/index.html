@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout | Football tournament</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="page-header">
+      <header>
+        <div class="container">
+          <div class="row"><a href="#">
+              <div class="span6">
+                <div class="logo">
+                  <h1>Knockout</h1>
+                  <div class="hmeta">Football tournament   </div>
+                </div>
+              </div>
+              <div class="form-horizontal span6">
+                <div class="control-group">
+                  <label for="admin" class="control-label">Admin</label>
+                  <div class="controls">
+                    <input type="checkbox" id="admin" data-bind="checked: admin">
+                  </div>
+                </div>
+              </div></a></div>
+        </div>
+      </header>
+    </div>
+    <div class="container">       
+      <ul class="nav nav-tabs row">
+        <!-- ko foreach: categories -->
+        <li><a data-toggle="tab" data-bind="attr: { href: '#'+ id() }"><span data-bind="text: name"></span>
+            <!-- ko if: $root.admin--><span data-bind="if: $root.categories().length &gt; 1 &amp;&amp; $root.admin, click: $root.removeCategory"> <i class="icon-trash link"></i></span>
+            <!-- /ko--></a></li>
+        <!-- /ko -->
+        <!-- ko if: $root.admin-->
+        <li><a href="#" data-bind="click: addCategory"> <i class="icon-plus"></i></a></li>
+        <!-- /ko-->
+      </ul>
+      <div class="tabbable row">
+        <div data-bind="foreach: { data: categories, as: 'category' }" class="tab-content">
+          <div data-bind="attr: { id: id }" class="tab-pane">
+            <!-- ko if: $root.admin-->
+            <div data-bind="template: { name: 'configurationTemplate', data: category }" class="row-fluid"></div>
+            <!-- /ko-->
+            <!-- ko foreach: poules-->
+            <div data-bind="template: { name: 'fixtureTemplate', data: fixture }" class="row-fluid"></div>
+            <div data-bind="template: { name: 'leaderboardTemplate', data: leaderboard }" class="row-fluid"></div>
+            <!-- /ko-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr><script type="text/html" id="configurationTemplate"> 
+    <div class="form-horizontal well">
+      <div class="control-group">
+        <label class="control-label">Naam</label>
+        <div class="controls">
+          <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Date</label>
+        <div class="controls">
+          <input type="date" data-bind="value: date" class="input-xlarge">
+        </div>
+      </div>
+      <div class="control-group">
+        <label data-bind="attr: { for: id() + 'HomeAndAway' }" class="control-label">Home and away</label>
+        <div class="controls">
+          <input type="checkbox" data-bind="checked: homeAndAway, attr: { id: id() + 'HomeAndAway' }">
+        </div>
+      </div>
+      <!-- ko foreach: { data: poules, as: 'poule' }-->
+      <div class="control-group">
+        <label class="control-label">Teams<a href="#" data-bind="if: category.poules().length &gt; 1, click: category.removePoule"> <i class="icon-trash">       </i></a></label>
+        <div data-bind="foreach: teams" class="controls teams">
+          <div class="team">
+            <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" class="input-xlarge"><a href="#" data-bind="if: poule.teams().length &gt; 2, click: poule.removeTeam"> <i class="icon-trash"></i></a>
+          </div>
+        </div>
+        <div class="controls">
+          <button data-bind="click: poule.addTeam" class="btn">Add team <i class="icon-plus"> </i></button>
+        </div>
+      </div>
+      <!-- /ko-->
+      <div class="form-actions">
+        <button data-bind="click: category.addPoule" class="btn">Add poule  <i class="icon-plus"> </i></button>
+        <button data-bind="click: generateFixture" class="btn">Generate fixture <i class="icon-ok"></i></button>
+      </div>
+    </div></script><script type="text/html" id="fixtureTemplate"> 
+    <h2>Fixture
+      <!-- ko if: $root.admin-->
+      <button data-bind="click: category.sortFixture" class="btn"><i class="icon-resize-vertical"></i></button>
+      <!-- /ko-->
+    </h2>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Uur</th>
+          <th class="text-center">Thuis</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th class="text-center">Uit</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: $data">
+        <tr>
+          <!-- ko if: $root.admin-->
+          <td>
+            <input type="date" data-bind="value: date" class="input-medium">
+          </td>
+          <td>
+            <input type="time" data-bind="value: time" class="input-small">
+          </td>
+          <!-- /ko-->
+          <!-- ko if: !$root.admin()-->
+          <td>
+            <input type="date" disabled data-bind="value: date" class="input-medium">
+          </td>
+          <td>
+            <input type="time" disabled data-bind="value: time" class="input-small">
+          </td>
+          <!-- /ko-->
+          <td data-bind="text: homeTeam().name()" class="fixtureTextItem text-center"></td>
+          <td class="text-center">
+            <input type="number" min="0" data-bind="value: homeScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+          </td>
+          <td class="fixtureTextItem text-center">-</td>
+          <td class="text-center">
+            <input type="number" min="0" data-bind="value: awayScore, valueUpdate: 'afterkeydown'" class="input-verysmall">
+          </td>
+          <td data-bind="text: awayTeam().name()" class="fixtureTextItem text-center"></td>
+        </tr>
+      </tbody>
+    </table></script><script type="text/html" id="leaderboardTemplate"> 
+    <h2>Leaderboard</h2>
+    <table class="table table-striped table-hover table-bordered tablesorter leaderboard">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>M</th>
+          <th>M+</th>
+          <th>M-</th>
+          <th>M=</th>
+          <th>D+</th>
+          <th>D-</th>
+          <th>D+/-</th>
+          <th>Ptn</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: $data">
+        <tr>
+          <td data-bind="text: $index() + 1"></td>
+          <td data-bind="text: name"></td>
+          <td data-bind="text: played"></td>
+          <td data-bind="text: won"></td>
+          <td data-bind="text: lost"></td>
+          <td data-bind="text: draws"></td>
+          <td data-bind="text: goalsFor"></td>
+          <td data-bind="text: goalsAgainst"></td>
+          <td data-bind="text: goalsDifference"></td>
+          <td data-bind="text: points"></td>
+        </tr>
+      </tbody>
+    </table></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
