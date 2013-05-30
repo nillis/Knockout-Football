@@ -1,10 +1,16 @@
 // Team viewmodel class
 define(['knockout'], function (ko) {
-    return function teamViewModel(name) {
+    return function teamViewModel(pouleMatches, name) {
         var self = this;
 
         self.name = ko.observable(name);
-        self.matches = ko.observableArray();
+        self.pouleMatches = pouleMatches;
+
+        self.matches = ko.computed(function () {
+            return ko.utils.arrayFilter(self.pouleMatches(), function (match) {
+                return match.homeTeam() === self || match.awayTeam() === self;
+            });
+        }, self);
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {

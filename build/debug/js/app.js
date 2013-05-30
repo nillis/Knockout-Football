@@ -12747,11 +12747,17 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 
 // Team viewmodel class
 define('teamViewModel',['knockout'], function (ko) {
-    return function teamViewModel(name) {
+    return function teamViewModel(pouleMatches, name) {
         var self = this;
 
         self.name = ko.observable(name);
-        self.matches = ko.observableArray();
+        self.pouleMatches = pouleMatches;
+
+        self.matches = ko.computed(function () {
+            return ko.utils.arrayFilter(self.pouleMatches(), function (match) {
+                return match.homeTeam() === self || match.awayTeam() === self;
+            });
+        }, self);
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
@@ -12851,21 +12857,21 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
 
         self.date = date;
         self.homeAndAway = homeAndAway;
+        self.matches = ko.observableArray();
+
         // Teams
 
-        self.teams = ko.observableArray([new teamViewModel(), new teamViewModel()]);
+        self.teams = ko.observableArray([new teamViewModel(self.matches), new teamViewModel(self.matches)]);
 
         self.removeTeam = function (team) {
             self.teams.remove(team);
         };
 
         self.addTeam = function () {
-            self.teams.push(new teamViewModel());
+            self.teams.push(new teamViewModel(self.matches));
         };
 
         // Fixture
-
-        self.matches = ko.observableArray();
 
         self.fixture = ko.computed(function () {
             return self.matches();
@@ -12874,24 +12880,16 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         self.generateFixture = function () {
             self.matches.removeAll();
 
-            ko.utils.arrayForEach(self.teams(), function (team) {
-                team.matches.removeAll();
-            });
-
             var teamCombinations = getCombinations(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
                 var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date());
-                teamCombination[0].matches.push(match);
-                teamCombination[1].matches.push(match);
                 self.matches.push(match);
             });
 
             if (self.homeAndAway()) {
                 ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
                     var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date());
-                    teamCombination[0].matches.push(match);
-                    teamCombination[1].matches.push(match);
                     self.matches.push(match);
                 });
             }
