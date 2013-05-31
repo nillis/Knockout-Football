@@ -15,7 +15,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         self.addMatch = function () {
-            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date()));
+            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date(), '12:00:00'));
         };
 
         // Teams
@@ -51,13 +51,13 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             var teamCombinations = getCombinations(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date());
+                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date(), '12:00:00');
                 self.matches.push(match);
             });
 
             if (self.homeAndAway()) {
                 ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date());
+                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date(), '12:00:00');
                     self.matches.push(match);
                 });
             }
@@ -90,5 +90,51 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
                 }
             });
         }, self).extend({ throttle: 1 });
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.date = self.date();
+            obj.homeAndAway = self.homeAndAway();
+            var matches = [];
+
+            ko.utils.arrayForEach(self.matches(), function (match) {
+                matches.push(match.toJS());
+            });
+
+            obj.matches = matches;  
+
+            var teams = [];
+
+            ko.utils.arrayForEach(self.teams(), function (team) {
+                teams.push(team.toJS());
+            });
+
+            obj.teams = teams;         
+            return obj;
+        };
+
+        self.map = function (obj) {
+            self.teams.removeAll();
+
+            ko.utils.arrayForEach(obj.teams, function (team) {
+                self.teams.push(new teamViewModel(self.matches, team.name));
+            });
+
+            ko.utils.arrayForEach(obj.matches, function (match) {
+                var homeTeam = ko.utils.arrayFirst(self.teams(), function(team) {
+                    return team.name() === match.homeTeamName;
+                });
+
+                var awayTeam = ko.utils.arrayFirst(self.teams(), function(team) {
+                    return team.name() === match.awayTeamName;
+                });
+
+                self.matches.push(new matchViewModel(homeTeam, awayTeam, match.date, match.time, match.homeScore, match.awayScore));
+            });
+
+            return self;
+        };
     };
 });

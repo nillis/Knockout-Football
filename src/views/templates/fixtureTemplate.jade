@@ -41,7 +41,7 @@ table.table.table-striped.table-hover
                 a(href='#', data-bind='click: poule.removeMatch') 
                     i.icon-trash
             // /ko
-            // ko if: !$root.admin()
+            // ko ifnot: $root.admin
             td
                 input.input-medium(type='date', disabled, data-bind='value: date')
             td

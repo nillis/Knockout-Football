@@ -26,5 +26,34 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
                 poule.generateFixture();
             });
         };
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.name = self.name();
+            obj.date = self.date();
+            obj.homeAndAway = self.homeAndAway();
+            var poules = [];
+
+            ko.utils.arrayForEach(self.poules(), function (poule) {
+                poules.push(poule.toJS());
+            });
+
+            obj.poules = poules;
+            return obj;
+        };
+
+        self.map = function (obj) {
+            self.date(obj.date);
+            self.homeAndAway(obj.homeAndAway);
+            self.poules.removeAll();
+
+            ko.utils.arrayForEach(obj.poules, function (poule) {
+                self.poules.push(new pouleViewModel(self.date, self.homeAndAway).map(poule));
+            });
+
+            return self;
+        };
     };
 });

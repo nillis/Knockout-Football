@@ -12,14 +12,18 @@
                                 label.control-label(for='admin') Admin
                                 .controls
                                     input(type='checkbox', id='admin', data-bind='checked: admin')
+                        // ko if: $root.admin
+                        .form-horizontal.span6
                             .control-group
                                 .controls
-                                    .input-append
+                                    .input-append                                     
                                         input(type='file', id='loadfileName')
                                         button.btn(data-bind='click: load') Load
+                            .control-group                                  
                                 .controls
-                                    .input-append
-                                        input(type='text', id='savefileName')
-                                        button.btn(data-bind='click: save') Save
-                                    output   
+                                    .input-append                                       
+                                        input(type='text', id='savefileName') 
+                                        button.btn(data-bind='click: save') Save                                    
+                                    output
+                        // /ko   
                                                      

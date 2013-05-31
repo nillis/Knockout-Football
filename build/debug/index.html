@@ -24,22 +24,27 @@
                     <input type="checkbox" id="admin" data-bind="checked: admin">
                   </div>
                 </div>
+              </div>
+              <!-- ko if: $root.admin-->
+              <div class="form-horizontal span6">
                 <div class="control-group">
                   <div class="controls">
-                    <div class="input-append">
+                    <div class="input-append">                                    
                       <input type="file" id="loadfileName">
                       <button data-bind="click: load" class="btn">Load</button>
                     </div>
                   </div>
+                </div>
+                <div class="control-group">                                 
                   <div class="controls">
-                    <div class="input-append">
+                    <div class="input-append">                                      
                       <input type="text" id="savefileName">
-                      <button data-bind="click: save" class="btn">Save</button>
+                      <button data-bind="click: save" class="btn">Save                                    </button>
                     </div>
-                    <output>  </output>
+                    <output></output>
                   </div>
                 </div>
-              </div></a></div>
+              </div><!-- /ko   --></a></div>
         </div>
       </header>
     </div>
@@ -151,7 +156,7 @@
           </td>
           <td><a href="#" data-bind="click: poule.removeMatch"> <i class="icon-trash"></i></a></td>
           <!-- /ko-->
-          <!-- ko if: !$root.admin()-->
+          <!-- ko ifnot: $root.admin-->
           <td>
             <input type="date" disabled data-bind="value: date" class="input-medium">
           </td>

@@ -13624,17 +13624,24 @@ define('teamViewModel',['knockout'], function (ko) {
         self.points = ko.computed(function () {
             return 3 * self.won() + 1 * self.draws();
         }, self);
+
+
+        // Mapping
+
+        self.toJS = function () {
+            return { name: self.name() };
+        };
     };
 });
 // Match viewmodel class
 define('matchViewModel',['knockout'], function (ko) {
-    return function matchViewModel(homeTeam, awayTeam, date) {
+    return function matchViewModel(homeTeam, awayTeam, date, time, homeScore, awayScore) {
         var self = this;
 
         self.homeTeam = ko.observable(homeTeam);
-        self._homeScore = ko.observable();
+        self._homeScore = ko.observable(homeScore);
         self.awayTeam = ko.observable(awayTeam);
-        self._awayScore = ko.observable();
+        self._awayScore = ko.observable(awayScore);
 
         this.homeScore= ko.computed({
             read: function(){
@@ -13655,7 +13662,20 @@ define('matchViewModel',['knockout'], function (ko) {
         }); 
 
         self.date = ko.observable(date);
-        self.time = ko.observable('12:00:00');
+        self.time = ko.observable(time);
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.homeTeamName = self.homeTeam().name(); 
+            obj.awayTeamName = self.awayTeam().name(); 
+            obj.homeScore = self.homeScore();
+            obj.awayScore = self.awayScore();  
+            obj.date = self.date();  
+            obj.time = self.time();       
+            return obj;
+        };
     };
 });
 var getCombinations = function (a, n) {
@@ -13695,7 +13715,7 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         };
 
         self.addMatch = function () {
-            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date()));
+            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date(), '12:00:00'));
         };
 
         // Teams
@@ -13731,13 +13751,13 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
             var teamCombinations = getCombinations(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date());
+                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date(), '12:00:00');
                 self.matches.push(match);
             });
 
             if (self.homeAndAway()) {
                 ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date());
+                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date(), '12:00:00');
                     self.matches.push(match);
                 });
             }
@@ -13770,6 +13790,52 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
                 }
             });
         }, self).extend({ throttle: 1 });
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.date = self.date();
+            obj.homeAndAway = self.homeAndAway();
+            var matches = [];
+
+            ko.utils.arrayForEach(self.matches(), function (match) {
+                matches.push(match.toJS());
+            });
+
+            obj.matches = matches;  
+
+            var teams = [];
+
+            ko.utils.arrayForEach(self.teams(), function (team) {
+                teams.push(team.toJS());
+            });
+
+            obj.teams = teams;         
+            return obj;
+        };
+
+        self.map = function (obj) {
+            self.teams.removeAll();
+
+            ko.utils.arrayForEach(obj.teams, function (team) {
+                self.teams.push(new teamViewModel(self.matches, team.name));
+            });
+
+            ko.utils.arrayForEach(obj.matches, function (match) {
+                var homeTeam = ko.utils.arrayFirst(self.teams(), function(team) {
+                    return team.name() === match.homeTeamName;
+                });
+
+                var awayTeam = ko.utils.arrayFirst(self.teams(), function(team) {
+                    return team.name() === match.awayTeamName;
+                });
+
+                self.matches.push(new matchViewModel(homeTeam, awayTeam, match.date, match.time, match.homeScore, match.awayScore));
+            });
+
+            return self;
+        };
     };
 });
 // Category viewmodel class
@@ -13800,6 +13866,35 @@ define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleVi
                 poule.generateFixture();
             });
         };
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.name = self.name();
+            obj.date = self.date();
+            obj.homeAndAway = self.homeAndAway();
+            var poules = [];
+
+            ko.utils.arrayForEach(self.poules(), function (poule) {
+                poules.push(poule.toJS());
+            });
+
+            obj.poules = poules;
+            return obj;
+        };
+
+        self.map = function (obj) {
+            self.date(obj.date);
+            self.homeAndAway(obj.homeAndAway);
+            self.poules.removeAll();
+
+            ko.utils.arrayForEach(obj.poules, function (poule) {
+                self.poules.push(new pouleViewModel(self.date, self.homeAndAway).map(poule));
+            });
+
+            return self;
+        };
     };
 });
 // App viewmodel class
@@ -13807,7 +13902,7 @@ define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], fu
     return function appViewModel() {
         var self = this;
 
-        self.admin = ko.observable('true');
+        self.admin = ko.observable(true);
         self.categories = ko.observableArray([new categoryViewModel('Category')]);
 
         self.addCategory = function () {
@@ -13819,8 +13914,7 @@ define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], fu
         };
 
         self.save = function () {
-            var json = mapping.toJSON(self);
-
+            var json = mapping.toJSON(self.toJS());
             window.URL = window.webkitURL || window.URL;
 
             var bb = new Blob([json], {
@@ -13828,14 +13922,13 @@ define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], fu
             });
 
             var a = $('<a>', {
-                    text: 'Download',
-                    href: window.URL.createObjectURL(bb)
-                })
+                text: 'Download',
+                href: window.URL.createObjectURL(bb)
+            })
                 .attr('download', $('#savefileName').val())
                 .attr('downloadurl', ['text/plain', $('#savefilename').val(), window.URL.createObjectURL(bb)].join(':'));
 
             $('output').html(a);
-            console.log(json);
         };
 
         self.load = function () {
@@ -13844,11 +13937,38 @@ define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], fu
             var r = new FileReader();
             r.onload = function (e) {
                 var json = e.target.result;
-                var data = ko.utils.parseJson(json);
-                console.log(data);
+                var appViewModel = ko.utils.parseJson(json);
+                self.map(appViewModel);
             };
 
             r.readAsText(f);
+        };
+
+        // Mapping
+
+        self.toJS = function () {
+            var obj = {};
+            obj.admin = self.admin();
+            var categories = [];
+
+            ko.utils.arrayForEach(self.categories(), function (category) {
+                categories.push(category.toJS());
+            });
+
+            obj.categories = categories;
+            return obj;
+        };
+
+        self.map = function (obj) {
+            self.admin(obj.admin);
+            self.categories.removeAll();
+
+            ko.utils.arrayForEach(obj.categories, function (category) {
+                var bla = new categoryViewModel(category.name).map(category);
+                self.categories.push(bla);
+            });
+
+            return self;
         };
     };
 });

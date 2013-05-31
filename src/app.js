@@ -6,6 +6,7 @@ requirejs.config({
         // Lib             
         'jquery': '../libs/jquery/jquery-2.0.0',
         'knockout': '../libs/knockout/knockout-2.2.1.debug',
+        'mapping' : '../libs/knockout/knockout.mapping-latest.debug',
         'bootstrap': '../libs/bootstrap/bootstrap.min',
         'domReady': '../libs/require/domReady',
 
@@ -22,6 +23,7 @@ requirejs.config({
     shim: {
         'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
+        'mapping' : ['knockout'],
 
         'appViewModel': ['jquery','knockout','mapping','categoryViewModel'],
         'categoryViewModel': ['knockout', 'pouleViewModel'],

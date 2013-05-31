@@ -1,5 +1,5 @@
 // App viewmodel class
-define(['jquery', 'knockout', 'categoryViewModel'], function ($, ko, categoryViewModel) {
+define(['jquery', 'knockout', 'categoryViewModel', 'mapping'], function ($, ko, categoryViewModel, mapping) {
     return function appViewModel() {
         var self = this;
 
@@ -15,8 +15,7 @@ define(['jquery', 'knockout', 'categoryViewModel'], function ($, ko, categoryVie
         };
 
         self.save = function () {
-            var json = self.toJSON();
-
+            var json = mapping.toJSON(self.toJS());
             window.URL = window.webkitURL || window.URL;
 
             var bb = new Blob([json], {
@@ -39,20 +38,38 @@ define(['jquery', 'knockout', 'categoryViewModel'], function ($, ko, categoryVie
             var r = new FileReader();
             r.onload = function (e) {
                 var json = e.target.result;
-                var data = ko.utils.parseJson(json);
-                console.log(data);
-                self.map(data);              
+                var appViewModel = ko.utils.parseJson(json);
+                self.map(appViewModel);
             };
 
             r.readAsText(f);
         };
 
-        self.toJSON = function () {
+        // Mapping
 
+        self.toJS = function () {
+            var obj = {};
+            obj.admin = self.admin();
+            var categories = [];
+
+            ko.utils.arrayForEach(self.categories(), function (category) {
+                categories.push(category.toJS());
+            });
+
+            obj.categories = categories;
+            return obj;
         };
 
         self.map = function (obj) {
+            self.admin(obj.admin);
+            self.categories.removeAll();
 
+            ko.utils.arrayForEach(obj.categories, function (category) {
+                var bla = new categoryViewModel(category.name).map(category);
+                self.categories.push(bla);
+            });
+
+            return self;
         };
     };
 });

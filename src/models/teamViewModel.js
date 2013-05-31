@@ -67,5 +67,12 @@ define(['knockout'], function (ko) {
         self.points = ko.computed(function () {
             return 3 * self.won() + 1 * self.draws();
         }, self);
+
+
+        // Mapping
+
+        self.toJS = function () {
+            return { name: self.name() };
+        };
     };
 });
