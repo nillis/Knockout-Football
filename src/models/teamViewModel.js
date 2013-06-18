@@ -14,7 +14,7 @@ define(['knockout'], function (ko) {
 
         self.playedMatches = ko.computed(function () {
             return ko.utils.arrayFilter(self.matches(), function (match) {
-                return match.homeScore() !== undefined && match.awayScore() !== undefined;
+                return self.isNumber(match.homeScore()) && self.isNumber(match.awayScore());
             });
         }, self);
 
@@ -68,6 +68,11 @@ define(['knockout'], function (ko) {
             return 3 * self.won() + 1 * self.draws();
         }, self);
 
+        // Helper
+
+        self.isNumber = function (o) {
+            return typeof o === 'number' && isFinite(o);
+        };
 
         // Mapping
 
