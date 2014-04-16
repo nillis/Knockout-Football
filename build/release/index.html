@@ -93,6 +93,12 @@
           <input type="checkbox" data-bind="checked: homeAndAway, attr: { id: id() + 'HomeAndAway' }">
         </div>
       </div>
+      <div class="control-group">
+        <label data-bind="attr: { for: id() + 'DrawWithGoalsTwoPoints' }" class="control-label">Draw with goals +2</label>
+        <div class="controls">
+          <input type="checkbox" data-bind="checked: drawWithGoalsTwoPoints, attr: { id: id() + 'DrawWithGoalsTwoPoints' }">
+        </div>
+      </div>
       <!-- ko foreach: { data: poules, as: 'poule' }-->
       <div class="control-group">
         <label class="control-label">Teams<a href="#" data-bind="if: category.poules().length &gt; 1, click: category.removePoule"> <i class="icon-trash">       </i></a></label>

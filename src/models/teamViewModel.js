@@ -1,10 +1,11 @@
 // Team viewmodel class
 define(['knockout'], function (ko) {
-    return function teamViewModel(pouleMatches, name) {
+    return function teamViewModel(pouleMatches, drawWithGoalsTwoPoints, name) {
         var self = this;
 
         self.name = ko.observable(name);
         self.pouleMatches = pouleMatches;
+        self.drawWithGoalsTwoPoints = drawWithGoalsTwoPoints;
 
         self.matches = ko.computed(function () {
             return ko.utils.arrayFilter(self.pouleMatches(), function (match) {
@@ -40,6 +41,18 @@ define(['knockout'], function (ko) {
             }).length;
         }, self);
 
+        self.drawsWithGoals = ko.computed(function () {
+            return ko.utils.arrayFilter(self.playedMatches(), function (match) {
+                return match.homeScore() === match.awayScore() && match.homeScore() !== 0;
+            }).length;
+        }, self);
+
+        self.drawsWithoutGoals = ko.computed(function () {
+            return ko.utils.arrayFilter(self.playedMatches(), function (match) {
+                return match.homeScore() === match.awayScore() && match.homeScore() === 0;
+            }).length;
+        }, self);
+
         self.goalsFor = ko.computed(function () {
             var goalsFor = 0;
 
@@ -65,6 +78,10 @@ define(['knockout'], function (ko) {
         }, self);
 
         self.points = ko.computed(function () {
+            if(self.drawWithGoalsTwoPoints()) {
+                return 3 * self.won() + 2 * self.drawsWithGoals() + 1 * self.drawsWithoutGoals();
+            }
+
             return 3 * self.won() + 1 * self.draws();
         }, self);
 

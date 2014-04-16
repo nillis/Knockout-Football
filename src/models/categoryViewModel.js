@@ -11,7 +11,9 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
 
         self.date = ko.observable(new Date().toJSON().slice(0, 10));
         self.homeAndAway = ko.observable(false);
-        self.poules = ko.observableArray([new pouleViewModel(self.date, self.homeAndAway)]);
+        self.drawWithGoalsTwoPoints = ko.observable(false);
+        
+        self.poules = ko.observableArray([new pouleViewModel(self.date, self.homeAndAway, self.drawWithGoalsTwoPoints)]);
 
         self.removePoule = function (poule) {
             self.poules.remove(poule);

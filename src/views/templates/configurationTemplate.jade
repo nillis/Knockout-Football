@@ -16,6 +16,11 @@
         .controls
             input(type='checkbox', data-bind='checked: homeAndAway, attr: { id: id() + \'HomeAndAway\' }')
     
+    .control-group
+        label.control-label(data-bind='attr: { for: id() + \'DrawWithGoalsTwoPoints\' }') Draw with goals +2
+        .controls
+            input(type='checkbox', data-bind='checked: drawWithGoalsTwoPoints, attr: { id: id() + \'DrawWithGoalsTwoPoints\' }')
+
     // ko foreach: { data: poules, as: 'poule' }
     .control-group
         label.control-label Teams

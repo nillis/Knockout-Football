@@ -1,10 +1,11 @@
 // Poule viewmodel class
 define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
-    return function pouleViewModel(date, homeAndAway) {
+    return function pouleViewModel(date, homeAndAway, drawWithGoalsTwoPoints) {
         var self = this;
 
         self.date = date;
         self.homeAndAway = homeAndAway;
+        self.drawWithGoalsTwoPoints = drawWithGoalsTwoPoints;
 
         // Matches
 
@@ -20,7 +21,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
 
         // Teams
 
-        self.teams = ko.observableArray([new teamViewModel(self.matches), new teamViewModel(self.matches)]);
+        self.teams = ko.observableArray([new teamViewModel(self.matches, self.drawWithGoalsTwoPoints), new teamViewModel(self.matches, self.drawWithGoalsTwoPoints)]);
 
         self.removeTeam = function (team) {
             var temp = self.matches().slice();
@@ -33,7 +34,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         self.addTeam = function () {
-            self.teams.push(new teamViewModel(self.matches));
+            self.teams.push(new teamViewModel(self.matches, self.drawWithGoalsTwoPoints));
         };
 
         // Fixture
