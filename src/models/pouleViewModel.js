@@ -98,6 +98,8 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             var obj = {};
             obj.date = self.date();
             obj.homeAndAway = self.homeAndAway();
+            obj.drawWithGoalsTwoPoints = self.drawWithGoalsTwoPoints();
+
             var matches = [];
 
             ko.utils.arrayForEach(self.matches(), function (match) {
@@ -117,10 +119,12 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         self.map = function (obj) {
+            self.drawWithGoalsTwoPoints(obj.drawWithGoalsTwoPoints);
+
             self.teams.removeAll();
 
             ko.utils.arrayForEach(obj.teams, function (team) {
-                self.teams.push(new teamViewModel(self.matches, team.name));
+                self.teams.push(new teamViewModel(self.matches, self.drawWithGoalsTwoPoints, team.name));
             });
 
             ko.utils.arrayForEach(obj.matches, function (match) {

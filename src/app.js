@@ -12,6 +12,8 @@ requirejs.config({
 
         // Utils
         'combinations': 'utils/combinations.utils',
+        'hasher': 'utils/hasher.utils',
+        'security': 'utils/security.utils',
 
         // Models
         'appViewModel': 'models/appViewModel',
@@ -33,7 +35,12 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'knockout', 'appViewModel', 'domReady!'], function ($, ko, appViewModel) {
+require(['jquery', 'knockout', 'appViewModel', 'security', 'domReady!'], function ($, ko, appViewModel) {
+    if (!validateLicence(1477297797)) {
+        $('body').html('');
+        return;
+    }
+
     ko.applyBindings(new appViewModel());
 
     $('.nav-tabs li:first-child').addClass('active');

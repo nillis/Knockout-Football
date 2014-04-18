@@ -69,9 +69,18 @@ module.exports = function (grunt) {
         // Release
 
         uglify: {
-            'build/release/js/app.js': [
-                'build/debug/js/app.js'
-            ]
+            options: {
+                mangle: {toplevel: true},
+                squeeze: {dead_code: false},
+                codegen: {quote_keys: true}
+            },
+            my_target: {
+                files: {
+                    'build/release/js/app.js': [
+                        'build/debug/js/app.js'
+                    ]
+                }
+            }
         },
 
         cssmin: {

@@ -36,6 +36,8 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
             obj.name = self.name();
             obj.date = self.date();
             obj.homeAndAway = self.homeAndAway();
+            obj.drawWithGoalsTwoPoints = self.drawWithGoalsTwoPoints();
+
             var poules = [];
 
             ko.utils.arrayForEach(self.poules(), function (poule) {
@@ -49,10 +51,12 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
         self.map = function (obj) {
             self.date(obj.date);
             self.homeAndAway(obj.homeAndAway);
+            self.drawWithGoalsTwoPoints(obj.drawWithGoalsTwoPoints);
+
             self.poules.removeAll();
 
             ko.utils.arrayForEach(obj.poules, function (poule) {
-                self.poules.push(new pouleViewModel(self.date, self.homeAndAway).map(poule));
+                self.poules.push(new pouleViewModel(self.date, self.homeAndAway, self.drawWithGoalsTwoPoints).map(poule));
             });
 
             return self;

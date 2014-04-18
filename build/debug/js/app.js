@@ -13651,7 +13651,7 @@ define('teamViewModel',['knockout'], function (ko) {
         // Mapping
 
         self.toJS = function () {
-            return { name: self.name() };
+            return { name: self.name(), drawWithGoalsTwoPoints: self.drawWithGoalsTwoPoints() };
         };
     };
 });
@@ -13820,6 +13820,8 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
             var obj = {};
             obj.date = self.date();
             obj.homeAndAway = self.homeAndAway();
+            obj.drawWithGoalsTwoPoints = self.drawWithGoalsTwoPoints();
+
             var matches = [];
 
             ko.utils.arrayForEach(self.matches(), function (match) {
@@ -13839,10 +13841,12 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         };
 
         self.map = function (obj) {
+            self.drawWithGoalsTwoPoints(obj.drawWithGoalsTwoPoints);
+
             self.teams.removeAll();
 
             ko.utils.arrayForEach(obj.teams, function (team) {
-                self.teams.push(new teamViewModel(self.matches, team.name));
+                self.teams.push(new teamViewModel(self.matches, self.drawWithGoalsTwoPoints, team.name));
             });
 
             ko.utils.arrayForEach(obj.matches, function (match) {
@@ -13899,6 +13903,8 @@ define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleVi
             obj.name = self.name();
             obj.date = self.date();
             obj.homeAndAway = self.homeAndAway();
+            obj.drawWithGoalsTwoPoints = self.drawWithGoalsTwoPoints();
+
             var poules = [];
 
             ko.utils.arrayForEach(self.poules(), function (poule) {
@@ -13912,10 +13918,12 @@ define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleVi
         self.map = function (obj) {
             self.date(obj.date);
             self.homeAndAway(obj.homeAndAway);
+            self.drawWithGoalsTwoPoints(obj.drawWithGoalsTwoPoints);
+
             self.poules.removeAll();
 
             ko.utils.arrayForEach(obj.poules, function (poule) {
-                self.poules.push(new pouleViewModel(self.date, self.homeAndAway).map(poule));
+                self.poules.push(new pouleViewModel(self.date, self.homeAndAway, self.drawWithGoalsTwoPoints).map(poule));
             });
 
             return self;
@@ -13997,6 +14005,24 @@ define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], fu
         };
     };
 });
+var validateLicence = function (licenceKey) {
+    var now = new Date();
+    return hashCode(now.getFullYear() + "/" + now.getMonth()) === licenceKey;
+};
+
+var hashCode = function (string) {
+    var hash = 0;
+
+    for (i = 0; i < string.length; i++) {
+        char = string.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+
+    return hash;
+};
+define("security", function(){});
+
 /**
  * @license RequireJS domReady 2.0.1 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -14141,6 +14167,8 @@ requirejs.config({
 
         // Utils
         'combinations': 'utils/combinations.utils',
+        'hasher': 'utils/hasher.utils',
+        'security': 'utils/security.utils',
 
         // Models
         'appViewModel': 'models/appViewModel',
@@ -14162,7 +14190,12 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'knockout', 'appViewModel', 'domReady!'], function ($, ko, appViewModel) {
+require(['jquery', 'knockout', 'appViewModel', 'security', 'domReady!'], function ($, ko, appViewModel) {
+    if (!validateLicence(1477297797)) {
+        $('body').html('');
+        return;
+    }
+
     ko.applyBindings(new appViewModel());
 
     $('.nav-tabs li:first-child').addClass('active');

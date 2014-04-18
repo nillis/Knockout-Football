@@ -94,7 +94,7 @@ define(['knockout'], function (ko) {
         // Mapping
 
         self.toJS = function () {
-            return { name: self.name() };
+            return { name: self.name(), drawWithGoalsTwoPoints: self.drawWithGoalsTwoPoints() };
         };
     };
 });
