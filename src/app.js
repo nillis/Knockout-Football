@@ -3,7 +3,7 @@ requirejs.config({
             'bootstrap'
     ],
     paths: {
-        // Lib             
+        // Libs            
         'jquery': '../libs/jquery-2.1.1',
         'knockout': '../libs/knockout-3.1.0.debug',
         'koMapping' : '../libs/knockout.mapping-latest.debug',
@@ -13,7 +13,6 @@ requirejs.config({
         // Utils
         'combinations': 'utils/combinations',
 
-        // Models
         'appViewModel': 'viewmodels/appViewModel',
         'categoryViewModel': 'viewmodels/categoryViewModel',
         'matchViewModel': 'viewmodels/matchViewModel',
@@ -21,15 +20,9 @@ requirejs.config({
         'teamViewModel': 'viewmodels/teamViewModel'
     },
     shim: {
-        'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
-        'koMapping' : ['knockout'],
-
-        'appViewModel': ['jquery','knockout','koMapping','categoryViewModel'],
-        'categoryViewModel': ['knockout', 'pouleViewModel'],
-        'matchViewModel': ['knockout'],
-        'pouleViewModel': ['knockout', 'teamViewModel', 'matchViewModel', 'combinations'],
-        'teamViewModel': ['knockout']
+        'knockout' : ['jquery'],
+        'koMapping' : ['knockout']
     }
 });
 
