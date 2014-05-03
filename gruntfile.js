@@ -21,7 +21,7 @@ module.exports = function (grunt) {
         stylus: {
             compile: {
                 files: {
-                    'dist/debug/css/style.css': 'src/public/styles/style.styl'
+                    'dist/debug/css/style.css': 'design/styles/style.styl'
                 }
             }
         },
@@ -29,13 +29,13 @@ module.exports = function (grunt) {
         copy: {
             debug: {
                 files: [
-                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'dist/debug/img' },
+                    { expand: true, cwd: 'design/img/', src: ['**'], dest: 'dist/debug/img' },
                     { expand: true, cwd: 'libs/bootstrap/css/', src: ['**'], dest: 'dist/debug/css' }
                 ]
             },
             release: {
                 files: [
-                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'dist/release/img' },
+                    { expand: true, cwd: 'design/img/', src: ['**'], dest: 'dist/release/img' },
                     { expand: true, cwd: 'dist/debug/', src: ['index.html'], dest: 'dist/release/' },
                 ]
             }
