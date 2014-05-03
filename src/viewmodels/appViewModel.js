@@ -1,4 +1,4 @@
-define(['jquery', 'knockout', 'categoryViewModel', 'mapping'], function ($, ko, categoryViewModel, mapping) {
+define(['jquery', 'knockout', 'categoryViewModel', 'koMapping'], function ($, ko, categoryViewModel, koMapping) {
     return function appViewModel() {
         var self = this;
 
@@ -14,7 +14,7 @@ define(['jquery', 'knockout', 'categoryViewModel', 'mapping'], function ($, ko, 
         };
 
         self.save = function () {
-            var json = mapping.toJSON(self.toJS());
+            var json = koMapping.toJSON(self.toJS());
             window.URL = window.webkitURL || window.URL;
 
             var bb = new Blob([json], {

@@ -4,11 +4,11 @@ requirejs.config({
     ],
     paths: {
         // Lib             
-        'jquery': '../libs/jquery/jquery-2.0.0',
-        'knockout': '../libs/knockout/knockout-2.2.1.debug',
-        'mapping' : '../libs/knockout/knockout.mapping-latest.debug',
+        'jquery': '../libs/jquery-2.1.1',
+        'knockout': '../libs/knockout-3.1.0.debug',
+        'koMapping' : '../libs/knockout.mapping-latest.debug',
         'bootstrap': '../libs/bootstrap/bootstrap.min',
-        'domReady': '../libs/require/domReady',
+        'domReady': '../libs/domReady',
 
         // Utils
         'combinations': 'utils/combinations',
@@ -23,9 +23,9 @@ requirejs.config({
     shim: {
         'tablesorter': ['jquery'],
         'bootstrap': ['jquery'],
-        'mapping' : ['knockout'],
+        'koMapping' : ['knockout'],
 
-        'appViewModel': ['jquery','knockout','mapping','categoryViewModel'],
+        'appViewModel': ['jquery','knockout','koMapping','categoryViewModel'],
         'categoryViewModel': ['knockout', 'pouleViewModel'],
         'matchViewModel': ['knockout'],
         'pouleViewModel': ['knockout', 'teamViewModel', 'matchViewModel', 'combinations'],

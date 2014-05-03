@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         concat: {
             dist: {
                 src: [
-                  'libs/require/almond.js',
+                  'libs/almond.js',
                   'build/debug/js/app.js'
                 ],
 
