@@ -1,5 +1,8 @@
-define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
-    return function categoryViewModel(name) {
+define([
+    'knockout', 
+    'viewmodels/poule'
+], function (ko, Poule) {
+    return function category(name) {
         var self = this;
 
         self.name = ko.observable(name);
@@ -10,14 +13,14 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
 
         self.date = ko.observable(new Date().toJSON().slice(0, 10));
         self.homeAndAway = ko.observable(false);
-        self.poules = ko.observableArray([new pouleViewModel(self.date, self.homeAndAway)]);
+        self.poules = ko.observableArray([new Poule(self.date, self.homeAndAway)]);
 
         self.removePoule = function (poule) {
             self.poules.remove(poule);
         };
 
         self.addPoule = function () {
-            self.poules.push(new pouleViewModel(self.date, self.homeAndAway));
+            self.poules.push(new Poule(self.date, self.homeAndAway));
         };
 
         self.generateFixture = function () {
@@ -49,7 +52,7 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
             self.poules.removeAll();
 
             ko.utils.arrayForEach(obj.poules, function (poule) {
-                self.poules.push(new pouleViewModel(self.date, self.homeAndAway).map(poule));
+                self.poules.push(new poule(self.date, self.homeAndAway).map(poule));
             });
 
             return self;

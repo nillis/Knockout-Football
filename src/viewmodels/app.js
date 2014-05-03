@@ -1,12 +1,17 @@
-define(['jquery', 'knockout', 'categoryViewModel', 'koMapping'], function ($, ko, categoryViewModel, koMapping) {
-    return function appViewModel() {
+define([
+    'jquery', 
+    'knockout', 
+    'knockout.mapping',
+    'viewmodels/category'   
+], function ($, ko, koMapping, Category) {
+    return function app() {
         var self = this;
 
         self.admin = ko.observable(true);
-        self.categories = ko.observableArray([new categoryViewModel('Category')]);
+        self.categories = ko.observableArray([new Category('Category')]);
 
         self.addCategory = function () {
-            self.categories.push(new categoryViewModel('Category'));
+            self.categories.push(new Category('Category'));
         };
 
         self.removeCategory = function (category) {
@@ -64,7 +69,7 @@ define(['jquery', 'knockout', 'categoryViewModel', 'koMapping'], function ($, ko
             self.categories.removeAll();
 
             ko.utils.arrayForEach(obj.categories, function (category) {
-                var bla = new categoryViewModel(category.name).map(category);
+                var bla = new Category(category.name).map(category);
                 self.categories.push(bla);
             });
 

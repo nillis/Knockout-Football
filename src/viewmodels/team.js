@@ -1,5 +1,7 @@
-define(['knockout'], function (ko) {
-    return function teamViewModel(pouleMatches, name) {
+define([
+    'knockout'
+], function (ko) {
+    return function team(pouleMatches, name) {
         var self = this;
 
         self.name = ko.observable(name);

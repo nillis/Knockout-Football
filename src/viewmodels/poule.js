@@ -1,5 +1,10 @@
-define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel, combinations) {
-    return function pouleViewModel(date, homeAndAway) {
+define([
+    'knockout', 
+    'utils/combinations',
+    'viewmodels/team', 
+    'viewmodels/match'   
+], function (ko, combinations, Team, Match) {
+    return function poule(date, homeAndAway) {
         var self = this;
 
         self.date = date;
@@ -14,12 +19,12 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         self.addMatch = function () {
-            self.matches.push(new matchViewModel(self.teams()[0], self.teams()[1], self.date(), '12:00:00'));
+            self.matches.push(new Match(self.teams()[0], self.teams()[1], self.date(), '12:00:00'));
         };
 
         // Teams
 
-        self.teams = ko.observableArray([new teamViewModel(self.matches), new teamViewModel(self.matches)]);
+        self.teams = ko.observableArray([new Team(self.matches), new Team(self.matches)]);
 
         self.removeTeam = function (team) {
             var temp = self.matches().slice();
@@ -32,7 +37,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         };
 
         self.addTeam = function () {
-            self.teams.push(new teamViewModel(self.matches));
+            self.teams.push(new Team(self.matches));
         };
 
         // Fixture
@@ -50,13 +55,13 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             var teamCombinations = combinations.get(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date(), '12:00:00');
+                var match = new Match(teamCombination[0], teamCombination[1], self.date(), '12:00:00');
                 self.matches.push(match);
             });
 
             if (self.homeAndAway()) {
                 ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
-                    var match = new matchViewModel(teamCombination[1], teamCombination[0], self.date(), '12:00:00');
+                    var match = new Match(teamCombination[1], teamCombination[0], self.date(), '12:00:00');
                     self.matches.push(match);
                 });
             }
@@ -118,7 +123,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
             self.teams.removeAll();
 
             ko.utils.arrayForEach(obj.teams, function (team) {
-                self.teams.push(new teamViewModel(self.matches, team.name));
+                self.teams.push(new Team(self.matches, team.name));
             });
 
             ko.utils.arrayForEach(obj.matches, function (match) {
@@ -130,7 +135,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
                     return team.name() === match.awayTeamName;
                 });
 
-                self.matches.push(new matchViewModel(homeTeam, awayTeam, match.date, match.time, match.homeScore, match.awayScore));
+                self.matches.push(new Match(homeTeam, awayTeam, match.date, match.time, match.homeScore, match.awayScore));
             });
 
             return self;
