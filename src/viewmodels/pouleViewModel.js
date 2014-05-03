@@ -1,5 +1,4 @@
-// Poule viewmodel class
-define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
+define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel, combinations) {
     return function pouleViewModel(date, homeAndAway) {
         var self = this;
 
@@ -48,7 +47,7 @@ define(['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function
         self.generateFixture = function () {
             self.matches.removeAll();
 
-            var teamCombinations = getCombinations(self.teams(), 2);
+            var teamCombinations = combinations.get(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
                 var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date(), '12:00:00');

@@ -11,14 +11,14 @@ requirejs.config({
         'domReady': '../libs/require/domReady',
 
         // Utils
-        'combinations': 'utils/combinations.utils',
+        'combinations': 'utils/combinations',
 
         // Models
-        'appViewModel': 'models/appViewModel',
-        'categoryViewModel': 'models/categoryViewModel',
-        'matchViewModel': 'models/matchViewModel',
-        'pouleViewModel': 'models/pouleViewModel',
-        'teamViewModel': 'models/teamViewModel'
+        'appViewModel': 'viewmodels/appViewModel',
+        'categoryViewModel': 'viewmodels/categoryViewModel',
+        'matchViewModel': 'viewmodels/matchViewModel',
+        'pouleViewModel': 'viewmodels/pouleViewModel',
+        'teamViewModel': 'viewmodels/teamViewModel'
     },
     shim: {
         'tablesorter': ['jquery'],

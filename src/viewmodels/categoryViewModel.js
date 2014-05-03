@@ -1,4 +1,3 @@
-// Category viewmodel class
 define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
     return function categoryViewModel(name) {
         var self = this;

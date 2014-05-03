@@ -1,4 +1,3 @@
-// App viewmodel class
 define(['jquery', 'knockout', 'categoryViewModel', 'mapping'], function ($, ko, categoryViewModel, mapping) {
     return function appViewModel() {
         var self = this;

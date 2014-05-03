@@ -1,4 +1,3 @@
-// Team viewmodel class
 define(['knockout'], function (ko) {
     return function teamViewModel(pouleMatches, name) {
         var self = this;

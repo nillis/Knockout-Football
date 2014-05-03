@@ -13555,7 +13555,6 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
 	};
 }));
 
-// Team viewmodel class
 define('teamViewModel',['knockout'], function (ko) {
     return function teamViewModel(pouleMatches, name) {
         var self = this;
@@ -13638,7 +13637,6 @@ define('teamViewModel',['knockout'], function (ko) {
         };
     };
 });
-// Match viewmodel class
 define('matchViewModel',['knockout'], function (ko) {
     return function matchViewModel(homeTeam, awayTeam, date, time, homeScore, awayScore) {
         var self = this;
@@ -13683,28 +13681,34 @@ define('matchViewModel',['knockout'], function (ko) {
         };
     };
 });
-var getCombinations = function (a, n) {
-    var fn = function (n, src, got, all) {
-        if (n === 0) {
-            if (got.length > 0) {
-                all[all.length] = got;
+define('combinations',[
+
+], function () {
+    var get = function (sourceArray, n) {
+        var get = function (sourceArray, n, got, all) {
+            if (n === 0) {
+                if (got.length > 0) {
+                    all[all.length] = got;
+                }
+                return all;
             }
-            return;
-        }
-        for (var j = 0; j < src.length; j++) {
-            fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
-        }
-        return;
+
+            for (var i = 0; i < sourceArray.length; i++) {
+                get(sourceArray.slice(i + 1), n - 1, got.concat([sourceArray[i]]), all);
+            }
+
+            return all;
+        };
+
+        return get(sourceArray, n, [], []);
     };
 
-    var all = [];
-    fn(n, a, [], all);
-    return all;
-};
-define("combinations", function(){});
 
-// Poule viewmodel class
-define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel) {
+    return {
+        get: get
+    };
+});
+define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combinations'], function (ko, teamViewModel, matchViewModel, combinations) {
     return function pouleViewModel(date, homeAndAway) {
         var self = this;
 
@@ -13753,7 +13757,7 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         self.generateFixture = function () {
             self.matches.removeAll();
 
-            var teamCombinations = getCombinations(self.teams(), 2);
+            var teamCombinations = combinations.get(self.teams(), 2);
 
             ko.utils.arrayForEach(teamCombinations, function (teamCombination) {
                 var match = new matchViewModel(teamCombination[0], teamCombination[1], self.date(), '12:00:00');
@@ -13843,7 +13847,6 @@ define('pouleViewModel',['knockout', 'teamViewModel', 'matchViewModel', 'combina
         };
     };
 });
-// Category viewmodel class
 define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
     return function categoryViewModel(name) {
         var self = this;
@@ -13902,7 +13905,6 @@ define('categoryViewModel',['knockout', 'pouleViewModel'], function (ko, pouleVi
         };
     };
 });
-// App viewmodel class
 define('appViewModel',['jquery', 'knockout', 'categoryViewModel', 'mapping'], function ($, ko, categoryViewModel, mapping) {
     return function appViewModel() {
         var self = this;
@@ -14120,14 +14122,14 @@ requirejs.config({
         'domReady': '../libs/require/domReady',
 
         // Utils
-        'combinations': 'utils/combinations.utils',
+        'combinations': 'utils/combinations',
 
         // Models
-        'appViewModel': 'models/appViewModel',
-        'categoryViewModel': 'models/categoryViewModel',
-        'matchViewModel': 'models/matchViewModel',
-        'pouleViewModel': 'models/pouleViewModel',
-        'teamViewModel': 'models/teamViewModel'
+        'appViewModel': 'viewmodels/appViewModel',
+        'categoryViewModel': 'viewmodels/categoryViewModel',
+        'matchViewModel': 'viewmodels/matchViewModel',
+        'pouleViewModel': 'viewmodels/pouleViewModel',
+        'teamViewModel': 'viewmodels/teamViewModel'
     },
     shim: {
         'tablesorter': ['jquery'],

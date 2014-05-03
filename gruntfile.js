@@ -13,7 +13,7 @@ module.exports = function (grunt) {
                     pretty: true
                 },
                 files: {
-                    'build/debug/index.html': 'src/views/index.jade'
+                    'build/debug/index.html': 'src/templates/index.jade'
                 }
             }
         },

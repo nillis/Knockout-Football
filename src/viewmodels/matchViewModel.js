@@ -1,4 +1,3 @@
-// Match viewmodel class
 define(['knockout'], function (ko) {
     return function matchViewModel(homeTeam, awayTeam, date, time, homeScore, awayScore) {
         var self = this;
