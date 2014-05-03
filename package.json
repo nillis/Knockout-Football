@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "author": "Niels Timmermans <nillisti@gmail.com>",
   "description": "A Knockout application to manage football tournaments",
-  "main": "./server.js",
   "repository": {
     "type":"git",
-    "url":"https://github.com/nillis/3ICT2_Niels.Timmermans_project02.git"
+    "url":"https://github.com/nillis/knockout.git"
   },
   "keywords": [
     "knockout",
