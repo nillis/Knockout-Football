@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 
         // Debug
 
-        clean: ['build'],
+        clean: ['dist'],
 
         jade: {
             compile: {
@@ -13,7 +13,7 @@ module.exports = function (grunt) {
                     pretty: true
                 },
                 files: {
-                    'build/debug/index.html': 'src/templates/index.jade'
+                    'dist/debug/index.html': 'src/templates/index.jade'
                 }
             }
         },
@@ -21,7 +21,7 @@ module.exports = function (grunt) {
         stylus: {
             compile: {
                 files: {
-                    'build/debug/css/style.css': 'src/public/styles/style.styl'
+                    'dist/debug/css/style.css': 'src/public/styles/style.styl'
                 }
             }
         },
@@ -29,14 +29,14 @@ module.exports = function (grunt) {
         copy: {
             debug: {
                 files: [
-                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'build/debug/img' },
-                    { expand: true, cwd: 'libs/bootstrap/css/', src: ['**'], dest: 'build/debug/css' }
+                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'dist/debug/img' },
+                    { expand: true, cwd: 'libs/bootstrap/css/', src: ['**'], dest: 'dist/debug/css' }
                 ]
             },
             release: {
                 files: [
-                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'build/release/img' },
-                    { expand: true, cwd: 'build/debug/', src: ['index.html'], dest: 'build/release/' },
+                    { expand: true, cwd: 'src/public/img/', src: ['**'], dest: 'dist/release/img' },
+                    { expand: true, cwd: 'dist/debug/', src: ['index.html'], dest: 'dist/release/' },
                 ]
             }
         },
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: 'src',
                     name: 'app',
-                    out: 'build/debug/js/app.js',
+                    out: 'dist/debug/js/app.js',
                     mainConfigFile: 'src/app.js',
                     optimize: 'none'
                 }
@@ -57,10 +57,10 @@ module.exports = function (grunt) {
             dist: {
                 src: [
                   'libs/almond.js',
-                  'build/debug/js/app.js'
+                  'dist/debug/js/app.js'
                 ],
 
-                dest: 'build/debug/js/app.js',
+                dest: 'dist/debug/js/app.js',
 
                 separator: ';'
             }
@@ -69,17 +69,17 @@ module.exports = function (grunt) {
         // Release
 
         uglify: {
-            'build/release/js/app.js': [
-                'build/debug/js/app.js'
+            'dist/release/js/app.js': [
+                'dist/debug/js/app.js'
             ]
         },
 
         cssmin: {
             minify: {
                 expand: true,
-                cwd: 'build/debug/css/',
+                cwd: 'dist/debug/css/',
                 src: ['*.css'],
-                dest: 'build/release/css/'
+                dest: 'dist/release/css/'
             }
         },
 
@@ -119,7 +119,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['release']);
+    grunt.registerTask('default', ['release', 'watch']);
     grunt.registerTask('debug', ['jshint', 'clean', 'jade', 'stylus', 'copy:debug', 'requirejs', 'concat']);
     grunt.registerTask('release', ['debug', 'uglify', 'cssmin', 'copy:release']);
     grunt.registerTask('test', ['jshint']);
