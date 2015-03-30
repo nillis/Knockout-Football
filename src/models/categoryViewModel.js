@@ -20,7 +20,7 @@ define(['knockout', 'pouleViewModel'], function (ko, pouleViewModel) {
         };
 
         self.addPoule = function () {
-            self.poules.push(new pouleViewModel(self.date, self.homeAndAway));
+            self.poules.push(new pouleViewModel(self.date, self.homeAndAway, self.drawWithGoalsTwoPoints));
         };
 
         self.generateFixture = function () {
